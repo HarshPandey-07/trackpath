@@ -16,7 +16,18 @@ Internship &amp; Placement Tracking Platform
 
 ## To run
 
+### Frontend
+
 ```console
+cd frontend
+npm install
+npm run dev
+```
+
+### Backend
+
+```console
+cd backend
 npm install
 npm run dev
 ```
