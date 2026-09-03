@@ -38,9 +38,9 @@ export const registerUser = async ({ name, email, password }) => {
 	const token = generateAccessToken(newUser.id); // Access token for auth
 	const refreshToken = generateRefreshToken(newUser.id); // Refresh token for refreshing access token
 
-	const { password: _, ...safeUser } = newUser;
+	const { password: _, ...safeUser } = newUser.toObject();
 
-	return { safeUser, token, refreshToken };
+	return { ...safeUser, token, refreshToken };
 };
 
 export const loginUser = async ({ email, password }) => {
@@ -62,7 +62,7 @@ export const loginUser = async ({ email, password }) => {
 
 	const { password: _, ...safeUser } = user;
 
-	return { safeUser, token, refreshToken };
+	return { ...safeUser, token, refreshToken };
 };
 
 export const refreshToken = async (token) => {

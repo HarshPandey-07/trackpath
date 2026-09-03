@@ -2,15 +2,11 @@ import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
 
-import auth from "./src/routes/authRoutes.js";
+import auth from "./routes/authRoutes.js";
 
-import { errorHandler } from "./src/middlewares/errorHandler.js";
-import { connectDB } from "./src/config/dbConfig.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-connectDB();
 
 app.use(express.json());
 app.use(cookieParser());
@@ -23,6 +19,4 @@ app.use("/api/auth/", auth);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-	console.log(`Server listening on PORT: ${PORT}`);
-});
+export default app;
