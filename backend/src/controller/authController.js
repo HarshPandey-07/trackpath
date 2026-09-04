@@ -2,7 +2,23 @@ import * as authService from "../service/authService.js";
 
 export const register = async (req, res, next) => {
 	try {
-		const data = await authService.registerUser(req.body);
+		const body = req.body;
+
+		// Empty body check
+		if (!body || Object.keys(body).length === 0) {
+			const error = new Error("Invalid request");
+			error.statusCode = 400;
+			throw error;
+		}
+
+		// Required fields check
+		if (!body.name || !body.email || !body.password) {
+			const error = new Error("Invalid request");
+			error.statusCode = 400;
+			throw error;
+		}
+
+		const data = await authService.registerUser(body);
 		const { refreshToken, token, ...user } = data;
 
 		res.cookie("refreshToken", refreshToken, {
@@ -23,7 +39,23 @@ export const register = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
 	try {
-		const data = await authService.loginUser(req.body);
+		const body = req.body;
+
+		// Empty body check
+		if (!body || Object.keys(body).length === 0) {
+			const error = new Error("Invalid request");
+			error.statusCode = 400;
+			throw error;
+		}
+
+		// Required fields check
+		if (!body.email || !body.password) {
+			const error = new Error("Invalid request");
+			error.statusCode = 400;
+			throw error;
+		}
+
+		const data = await authService.loginUser(body);
 		const { refreshToken, token, ...user } = data;
 
 		res.cookie("refreshToken", refreshToken, {
@@ -44,6 +76,12 @@ export const login = async (req, res, next) => {
 
 export const refreshToken = async (req, res, next) => {
 	try {
+		if (!req.cookies?.refreshToken) {
+			const error = new Error("Unauthorized");
+			error.statusCode = 401;
+			throw error;
+		}
+
 		const token = await authService.refreshToken(req.cookies.refreshToken);
 
 		res.status(200).json({
