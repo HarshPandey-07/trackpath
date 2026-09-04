@@ -22,7 +22,11 @@ export const registerUser = async ({ name, email, password }) => {
 	// Check if user already exists
 	const existingUser = await User.findOne({ email });
 
-	if (existingUser) throw new Error("User already exists");
+	if (existingUser) {
+		const error = new Error("User already exists");
+		error.statusCode = 409;
+		throw error;
+	}
 
 	// Hash password
 	const hashedPassword = await bcrypt.hash(password, 10);
@@ -50,12 +54,20 @@ export const loginUser = async ({ email, password }) => {
 		.select("+password")
 		.lean();
 
-	if (!user) throw new Error("Invalid credentials");
+	if (!user) {
+		const error = new Error("Invalid credentials");
+		error.statusCode = 401;
+		throw error;
+	}
 
 	// Compare passwords
 	const isValid = await bcrypt.compare(password, user.password);
 
-	if (!isValid) throw new Error("Invalid credentials");
+	if (!isValid) {
+		const error = new Error("Invalid credentials");
+		error.statusCode = 401;
+		throw error;
+	}
 
 	const token = generateAccessToken(user.id);
 	const refreshToken = generateRefreshToken(user.id);
