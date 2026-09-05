@@ -1,0 +1,20 @@
+button {
+    background-color: var(--accent);
+    color: var(--text-primary);
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #aa3bff;
+    }
+}
+
+a {
+    color: #8AB4F8;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
