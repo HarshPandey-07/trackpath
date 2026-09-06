@@ -1,20 +1,31 @@
 button {
-    background-color: var(--accent);
-    color: var(--text-primary);
-    border-radius: 8px;
-    padding: 8px;
-    cursor: pointer;
+	background-color: var(--accent);
+	color: var(--text-primary);
+	border-radius: 8px;
+	padding: 8px;
+	cursor: pointer;
 
-    &:hover {
-        background-color: #aa3bff;
-    }
+	&:hover {
+		background-color: #aa3bff;
+	}
+
+	&:active {
+		background-color: #9e20ff;
+	}
 }
 
-a {
-    color: #8AB4F8;
-    cursor: pointer;
+.button-red {
+	background-color: red;
+	color: var(--text-primary);
+	border-radius: 8px;
+	padding: 8px;
+	cursor: pointer;
 
-    &:hover {
-        text-decoration: underline;
-    }
+	&:hover {
+		background-color: #ff3b3b;
+	}
+
+	&:active {
+		background-color: #bb0000;
+	}
 }

@@ -34,6 +34,8 @@ const AuthProvider = ({ children }) => {
 				});
 
 				if (!meResponse.ok) {
+					setUser(null);
+					setToken(null);
 					return;
 				}
 
@@ -41,6 +43,8 @@ const AuthProvider = ({ children }) => {
 				setUser(meData.user);
 			} catch (error) {
 				console.error("Authentication initialization failed:", error);
+				setUser(null);
+				setToken(null);
 			} finally {
 				setLoading(false);
 			}
