@@ -13,3 +13,19 @@ button {
 		background-color: #9e20ff;
 	}
 }
+
+.button-red {
+	background-color: red;
+	color: var(--text-primary);
+	border-radius: 8px;
+	padding: 8px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: #ff3b3b;
+	}
+
+	&:active {
+		background-color: #bb0000;
+	}
+}
