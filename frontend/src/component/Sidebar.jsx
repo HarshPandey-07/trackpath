@@ -1,5 +1,8 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 const Sidebar = () => {
+	const { user } = useContext(AuthContext);
 	return (
 		<nav className="fixed flex flex-col left-0 top-0 h-dvh w-64 bg-(--sidebar) p-4">
 			<h1 className="text-center">Trackpath</h1>
@@ -30,7 +33,7 @@ const Sidebar = () => {
 						`${isActive ? "bg-(--accent)" : ""} p-2 w-full rounded hover:bg-(--accent-bg)`
 					}
 				>
-					Profile
+					{user?.name ? user?.name : "Profile"}
 				</NavLink>
 				<button className="button-red">Logout</button>
 			</div>

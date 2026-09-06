@@ -3,11 +3,7 @@ import { createContext, useEffect, useState } from "react";
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
-	const [user, setUser] = useState({
-		name: "",
-		email: "",
-		password: "",
-	});
+	const [user, setUser] = useState(null);
 	const [token, setToken] = useState(null);
 	const [loading, setLoading] = useState(true);
 
@@ -38,6 +34,8 @@ const AuthProvider = ({ children }) => {
 				});
 
 				if (!meResponse.ok) {
+					setUser(null);
+					setToken(null);
 					return;
 				}
 
@@ -45,6 +43,8 @@ const AuthProvider = ({ children }) => {
 				setUser(meData.user);
 			} catch (error) {
 				console.error("Authentication initialization failed:", error);
+				setUser(null);
+				setToken(null);
 			} finally {
 				setLoading(false);
 			}
