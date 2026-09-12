@@ -1,10 +1,13 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
+
 import { AuthContext } from "../context/AuthContext";
 import { register } from "../service/authService";
 
 const Login = () => {
 	const { setUser, setToken } = useContext(AuthContext);
+	const [showPassword, setShowPassword] = useState(false);
 	const [data, setData] = useState({
 		email: "",
 		password: "",
@@ -21,6 +24,8 @@ const Login = () => {
 			[e.target.name]: e.target.value,
 		});
 	};
+
+	const handleShowPassword = () => setShowPassword((prev) => !prev);
 
 	const handleSubmit = async (e) => {
 		try {
@@ -75,14 +80,26 @@ const Login = () => {
 
 				<div className="flex justify-center align-middle flex-col gap-0.5">
 					<label htmlFor="password">Password</label>
-					<input
-						type="password"
-						name="password"
-						id="password"
-						placeholder="Enter your password"
-						onChange={handleChange}
-						className="outline-none border border-(--border) p-2 rounded-lg hover:border-(--accent-border) focus:border-(--accent)"
-					/>
+					<div className="flex justify-between align-middle border border-(--border) p-2 rounded-lg hover:border-(--accent-border) focus:border-(--accent)">
+						<input
+							type={showPassword ? "text" : "password"}
+							name="password"
+							id="password"
+							placeholder="Enter your password"
+							onChange={handleChange}
+							className="outline-none flex-1"
+						/>
+						<button
+							onClick={handleShowPassword}
+							className="password-button"
+						>
+							{showPassword ? (
+								<EyeOff size={20} />
+							) : (
+								<Eye size={20} />
+							)}
+						</button>
+					</div>
 				</div>
 
 				<button onClick={handleSubmit}>Register</button>
