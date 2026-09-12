@@ -39,8 +39,8 @@ export const registerUser = async ({ name, email, password }) => {
 	});
 
 	// Generate JWT tokens
-	const token = generateAccessToken(newUser.id); // Access token for auth
-	const refreshToken = generateRefreshToken(newUser.id); // Refresh token for refreshing access token
+	const token = generateAccessToken(newUser._id); // Access token for auth
+	const refreshToken = generateRefreshToken(newUser._id); // Refresh token for refreshing access token
 
 	const { password: _, ...safeUser } = newUser.toObject();
 
@@ -69,8 +69,8 @@ export const loginUser = async ({ email, password }) => {
 		throw error;
 	}
 
-	const token = generateAccessToken(user.id);
-	const refreshToken = generateRefreshToken(user.id);
+	const token = generateAccessToken(user._id);
+	const refreshToken = generateRefreshToken(user._id);
 
 	const { password: _, ...safeUser } = user;
 
@@ -94,7 +94,7 @@ export const refreshToken = async (token) => {
 		throw error;
 	}
 
-	return generateAccessToken(user.id);
+	return generateAccessToken(user._id);
 };
 
 export const getMe = async (userId) => {
