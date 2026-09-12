@@ -22,7 +22,15 @@ const Sidebar = () => {
 						`${isActive ? "bg-(--accent)" : ""} p-2 w-full rounded hover:bg-(--accent-bg)`
 					}
 				>
-					...
+					Applications
+				</NavLink>
+				<NavLink
+					to={"/login"} // For test purpose later add
+					className={({ isActive }) =>
+						`${isActive ? "bg-(--accent)" : ""} p-2 w-full rounded hover:bg-(--accent-bg)`
+					}
+				>
+					Interviews
 				</NavLink>
 			</div>
 			<div className="mt-auto mb-6 flex flex-col text-center gap-2">
