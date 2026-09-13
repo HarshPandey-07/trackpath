@@ -9,7 +9,7 @@ const AppLayout = () => {
 		<div className="min-h-screen">
 			<Sidebar />
 			<main
-				className={`${showSidebar ? "md:ml-64" : "md:mx-20"} min-h-screen p-6 transition-all duration-150`}
+				className={`${showSidebar ? "md:ml-64" : "md:mx-20"} min-h-screen mt-8 md:mt-0 p-6 transition-all duration-150`}
 			>
 				<Outlet />
 			</main>

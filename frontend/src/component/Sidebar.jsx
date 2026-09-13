@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { logout } from "../service/authService";
+import { ChevronRight } from "lucide-react";
 const Sidebar = () => {
 	const { user, setUser, setToken, showSidebar, setShowSidebar } =
 		useContext(AuthContext);
@@ -84,7 +85,12 @@ const Sidebar = () => {
 					</div>
 				</>
 			) : (
-				<button onClick={toggleShowSidebar}>|||</button>
+				<button
+					className="md:bg-transparent! m-0!"
+					onClick={toggleShowSidebar}
+				>
+					<ChevronRight />
+				</button>
 			)}
 		</nav>
 	);
