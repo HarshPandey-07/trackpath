@@ -6,6 +6,7 @@ const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [token, setToken] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [showSidebar, setShowSidebar] = useState(false);
 
 	useEffect(() => {
 		const initializeAuth = async () => {
@@ -64,9 +65,11 @@ const AuthProvider = ({ children }) => {
 			value={{
 				user,
 				token,
+				showSidebar,
 				loading,
 				setUser,
 				setToken,
+				setShowSidebar,
 			}}
 		>
 			{children}

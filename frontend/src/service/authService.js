@@ -24,7 +24,22 @@ export const login = async (user) => {
 	const data = await res.json();
 
 	if (!res.ok) {
-		throw Error(data.message || "Login failed");
+		throw new Error(data.message || "Login failed");
+	}
+
+	return data;
+};
+
+export const logout = async () => {
+	const res = await fetch("/api/auth/logout", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+	});
+
+	const data = await res.json();
+
+	if (!res.ok) {
+		throw new Error(data.message || "Logout failed");
 	}
 
 	return data;
