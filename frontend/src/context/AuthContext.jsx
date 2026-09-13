@@ -6,6 +6,7 @@ const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [token, setToken] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [showSidebar, setShowSidebar] = useState(false);
 
 	useEffect(() => {
 		const initializeAuth = async () => {
@@ -16,8 +17,14 @@ const AuthProvider = ({ children }) => {
 					credentials: "include",
 				});
 
-				if (!refreshResponse.ok) {
+				if (refreshResponse.status === 401) {
+					setUser(null);
+					setToken(null);
 					return;
+				}
+
+				if (!refreshResponse.ok) {
+					throw new Error("Failed to refresh authentication");
 				}
 
 				const refreshData = await refreshResponse.json();
@@ -40,7 +47,7 @@ const AuthProvider = ({ children }) => {
 				}
 
 				const meData = await meResponse.json();
-				setUser(meData.user);
+				setUser(meData);
 			} catch (error) {
 				console.error("Authentication initialization failed:", error);
 				setUser(null);
@@ -58,9 +65,11 @@ const AuthProvider = ({ children }) => {
 			value={{
 				user,
 				token,
+				showSidebar,
 				loading,
 				setUser,
 				setToken,
+				setShowSidebar,
 			}}
 		>
 			{children}
