@@ -3,6 +3,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 
 import auth from "./routes/authRoutes.js";
+import application from "./routes/applicationRoutes.js";
 
 import { errorHandler } from "./middlewares/errorHandler.js";
 
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth/", auth);
+app.use("/api/application/", application);
 
 app.use(errorHandler);
 

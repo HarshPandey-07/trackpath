@@ -9,7 +9,7 @@
 	"scripts": {
 		"dev": "nodemon src/server.js",
 		"start": "node src/server.js",
-		"test": "node --test --import ./tests/setup.js"
+		"test": "node --test --test-concurrency=1 --import ./tests/setup.js"
 	},
 	"dependencies": {
 		"bcryptjs": "^3.0.3",
