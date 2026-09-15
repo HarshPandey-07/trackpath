@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const applicationSchema = new mongoose.Schema(
 	{
+		userId: {
+			type: String,
+			required: true,
+		},
 		companyName: {
 			type: String,
 			required: true,
@@ -19,17 +23,18 @@ const applicationSchema = new mongoose.Schema(
 		status: {
 			type: String,
 			enum: [
-				"applied",
-				"shortlisted",
-				"interview",
-				"selected",
-				"rejected",
+				"Applied",
+				"Shortlisted",
+				"Interview",
+				"Selected",
+				"Rejected",
 			],
-			default: "applied",
+			default: "Applied",
 		},
 		appliedDate: {
 			type: Date,
 			required: true,
+			default: new Date(),
 		},
 		applicationLink: {
 			type: String,

@@ -3,6 +3,7 @@ import * as applicationService from "../service/applicationService.js";
 export const createApplication = async (req, res, next) => {
 	try {
 		const body = req.body;
+		const user = req.user;
 
 		// Empty body check
 		if (!body || Object.keys(body).length === 0) {
@@ -11,7 +12,7 @@ export const createApplication = async (req, res, next) => {
 			throw error;
 		}
 
-		const data = await applicationService.createApplication(body);
+		const data = await applicationService.createApplication(user, body);
 
 		res.status(201).json({
 			message: "Application created successfully",
@@ -24,7 +25,8 @@ export const createApplication = async (req, res, next) => {
 
 export const readApplications = async (req, res, next) => {
 	try {
-		const data = await applicationService.findApplications();
+		const user = req.user;
+		const data = await applicationService.findApplications(user);
 
 		res.status(201).json(data);
 	} catch (error) {
@@ -36,6 +38,7 @@ export const updateApplication = async (req, res, next) => {
 	try {
 		const applicationId = req.params.id;
 		const body = req.body;
+		const user = req.user;
 
 		// Empty body check
 		if (!body || Object.keys(body).length === 0) {
@@ -45,6 +48,7 @@ export const updateApplication = async (req, res, next) => {
 		}
 
 		const data = await applicationService.updateApplication(
+			user,
 			applicationId,
 			body,
 		);
@@ -61,8 +65,12 @@ export const updateApplication = async (req, res, next) => {
 export const deleteApplication = async (req, res, next) => {
 	try {
 		const applicationId = req.params.id;
+		const user = req.user;
 
-		const data = await applicationService.deleteApplication(applicationId);
+		const data = await applicationService.deleteApplication(
+			user,
+			applicationId,
+		);
 
 		res.status(201).json({
 			message: "Application deleted successfully",
