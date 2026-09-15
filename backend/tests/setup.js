@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { before, after, beforeEach } from "node:test";
 
 import User from "../src/model/User.js";
+import Application from "../src/model/Application.js";
 
 const TEST_DB = process.env.TEST_DB;
 
@@ -12,6 +13,7 @@ before(async () => {
 
 beforeEach(async () => {
 	await User.deleteMany({});
+	await Application.deleteMany({});
 });
 
 after(async () => {
