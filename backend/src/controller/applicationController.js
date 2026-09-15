@@ -24,7 +24,7 @@ export const createApplication = async (req, res, next) => {
 
 export const readApplications = async (req, res, next) => {
 	try {
-		const data = await applicationService.findApplications(body);
+		const data = await applicationService.findApplications();
 
 		res.status(201).json(data);
 	} catch (error) {
@@ -61,19 +61,8 @@ export const updateApplication = async (req, res, next) => {
 export const deleteApplication = async (req, res, next) => {
 	try {
 		const applicationId = req.params.id;
-		const body = req.body;
 
-		// Empty body check
-		if (!body || Object.keys(body).length === 0) {
-			const error = new Error("Invalid request");
-			error.statusCode = 400;
-			throw error;
-		}
-
-		const data = await applicationService.deleteApplication(
-			applicationId,
-			body,
-		);
+		const data = await applicationService.deleteApplication(applicationId);
 
 		res.status(201).json({
 			message: "Application deleted successfully",
