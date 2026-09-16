@@ -1,25 +1,32 @@
-import test from "node:test";
+import test, { beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import request from "supertest";
 
 import app from "../src/app.js";
 
-// Create application
-// Valid input
-test("POST /api/application creates application", async () => {
+let token;
+
+// This beforeEach ONLY runs for tests inside this file
+beforeEach(async () => {
+	// 1. Create a dummy user because the DB was just wiped clean by the global setup
 	await request(app).post("/api/auth/register").send({
 		name: "Test User",
 		email: "test@example.com",
 		password: "password123",
 	});
 
+	// 2. Log them in to grab the token
 	const login = await request(app).post("/api/auth/login").send({
 		email: "test@example.com",
 		password: "password123",
 	});
 
-	const token = login.body.token;
+	token = login.body.token;
+});
 
+// Create application
+// Valid input
+test("POST /api/application creates application", async () => {
 	const response = await request(app)
 		.post("/api/application")
 		.set("Authorization", `Bearer ${token}`)
@@ -37,19 +44,6 @@ test("POST /api/application creates application", async () => {
 // Valid input
 // With application link and note
 test("POST /api/application creates application with link & notes", async () => {
-	await request(app).post("/api/auth/register").send({
-		name: "Test User",
-		email: "test@example.com",
-		password: "password123",
-	});
-
-	const login = await request(app).post("/api/auth/login").send({
-		email: "test@example.com",
-		password: "password123",
-	});
-
-	const token = login.body.token;
-
 	const response = await request(app)
 		.post("/api/application")
 		.set("Authorization", `Bearer ${token}`)
@@ -69,19 +63,6 @@ test("POST /api/application creates application with link & notes", async () => 
 // Invalid input
 // Empty body
 test("POST /api/application gives error for empty body", async () => {
-	await request(app).post("/api/auth/register").send({
-		name: "Test User",
-		email: "test@example.com",
-		password: "password123",
-	});
-
-	const login = await request(app).post("/api/auth/login").send({
-		email: "test@example.com",
-		password: "password123",
-	});
-
-	const token = login.body.token;
-
 	const response = await request(app)
 		.post("/api/application")
 		.set("Authorization", `Bearer ${token}`)
@@ -93,19 +74,6 @@ test("POST /api/application gives error for empty body", async () => {
 
 // Invalid felids
 test("POST /api/application gives error for invalid (less than 2 letters) company name", async () => {
-	await request(app).post("/api/auth/register").send({
-		name: "Test User",
-		email: "test@example.com",
-		password: "password123",
-	});
-
-	const login = await request(app).post("/api/auth/login").send({
-		email: "test@example.com",
-		password: "password123",
-	});
-
-	const token = login.body.token;
-
 	const response = await request(app)
 		.post("/api/application")
 		.set("Authorization", `Bearer ${token}`)
@@ -121,19 +89,6 @@ test("POST /api/application gives error for invalid (less than 2 letters) compan
 });
 
 test("POST /api/application gives error for invalid (less than 2 letters) role", async () => {
-	await request(app).post("/api/auth/register").send({
-		name: "Test User",
-		email: "test@example.com",
-		password: "password123",
-	});
-
-	const login = await request(app).post("/api/auth/login").send({
-		email: "test@example.com",
-		password: "password123",
-	});
-
-	const token = login.body.token;
-
 	const response = await request(app)
 		.post("/api/application")
 		.set("Authorization", `Bearer ${token}`)
@@ -146,4 +101,24 @@ test("POST /api/application gives error for invalid (less than 2 letters) role",
 		});
 
 	assert.equal(response.statusCode, 500);
+});
+
+test("PUT /api/application gives error for invalid input", async () => {
+	const response = await request(app)
+		.put("/api/application/65f1a2b3c4d5e6f7a8b9c0d1")
+		.set("Authorization", `Bearer ${token}`)
+		.send({ companyName: "Google" });
+
+	assert.equal(response.statusCode, 404);
+	assert.equal(response.body.message, "Application not found");
+});
+
+test("DELETE /api/application gives error for invalid input", async () => {
+	const response = await request(app)
+		.delete("/api/application/65f1a2b3c4d5e6f7a8b9c0d1")
+		.set("Authorization", `Bearer ${token}`)
+		.send({});
+
+	assert.equal(response.statusCode, 404);
+	assert.equal(response.body.message, "Application not found");
 });
