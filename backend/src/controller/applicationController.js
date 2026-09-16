@@ -25,10 +25,22 @@ export const createApplication = async (req, res, next) => {
 
 export const readApplications = async (req, res, next) => {
 	try {
-		const user = req.user;
-		const data = await applicationService.findApplications(user);
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 10;
 
-		res.status(201).json(data);
+		// How many documents to skip
+		const skip = (page - 1) * limit;
+
+		const user = req.user;
+		const { applications, totalApplications } =
+			await applicationService.findApplications(user, skip, limit);
+
+		res.status(200).json({
+			data: applications,
+			totalApplications,
+			currentPage: page,
+			totalPages: Math.ceil(totalApplications / limit),
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -72,7 +84,7 @@ export const deleteApplication = async (req, res, next) => {
 			applicationId,
 		);
 
-		res.status(201).json({
+		res.status(200).json({
 			message: "Application deleted successfully",
 			data,
 		});
