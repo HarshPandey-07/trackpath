@@ -30,7 +30,7 @@ export const updateApplication = async (user, id, updatedData) => {
 		{ _id: id, userId: user.userId },
 		updatedData,
 		{
-			new: true,
+			returnDocument: "after",
 			runValidators: true,
 		},
 	);
@@ -61,36 +61,31 @@ export const deleteApplication = async (user, id) => {
 };
 
 // Dashboard stats
-export const totalApplications = async (user) => {
-	return await Application.countDocuments({
-		userId: user.userId,
-	});
-};
+export const applicationsStats = async (user) => {
+	const [total, applied, shortlisted, interview, selected, rejected] =
+		await Promise.all([
+			Application.countDocuments({ userId: user.userId }),
+			Application.countDocuments({
+				userId: user.userId,
+				status: "Applied",
+			}),
+			Application.countDocuments({
+				userId: user.userId,
+				status: "Shortlisted",
+			}),
+			Application.countDocuments({
+				userId: user.userId,
+				status: "Interview",
+			}),
+			Application.countDocuments({
+				userId: user.userId,
+				status: "Selected",
+			}),
+			Application.countDocuments({
+				userId: user.userId,
+				status: "Rejected",
+			}),
+		]);
 
-export const appliedApplications = async (user) => {
-	return await Application.countDocuments({
-		userId: user.userId,
-		status: "Applied",
-	});
-};
-
-export const shortlistedApplications = async (user) => {
-	return await Application.countDocuments({
-		userId: user.userId,
-		status: "Shortlisted",
-	});
-};
-
-export const interviewApplications = async (user) => {
-	return await Application.countDocuments({
-		userId: user.userId,
-		status: "Interview",
-	});
-};
-
-export const selectedApplications = async (user) => {
-	return await Application.countDocuments({
-		userId: user.userId,
-		status: "Selected",
-	});
+	return { total, applied, shortlisted, interview, selected, rejected };
 };

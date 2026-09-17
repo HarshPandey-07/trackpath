@@ -1,41 +1,33 @@
 import mongoose, { Schema } from "mongoose";
 
-const applicationSchema = new mongoose.Schema(
+const interviewSchema = new mongoose.Schema(
 	{
 		userId: {
 			type: Schema.Types.ObjectId,
 			required: true,
 		},
-		companyName: {
-			type: String,
+		application: {
+			type: Schema.Types.ObjectId,
+			ref: "Application", // Links with Application model
 			required: true,
-			trim: true,
-			minLength: 2,
-			maxLength: 100,
 		},
-		role: {
+		round: {
 			type: String,
-			required: true,
 			trim: true,
 			minLength: 2,
 			maxLength: 100,
+			required: true,
 		},
 		status: {
 			type: String,
-			enum: [
-				"Applied",
-				"Shortlisted",
-				"Interview",
-				"Selected",
-				"Rejected",
-			],
-			default: "Applied",
+			enum: ["Scheduled", "Completed", "Canceled"],
+			default: "Scheduled",
 		},
-		appliedDate: {
+		date: {
 			type: Date,
 			default: Date.now,
 		},
-		applicationLink: {
+		interviewLink: {
 			type: String,
 			trim: true,
 			validate: {
@@ -54,8 +46,8 @@ const applicationSchema = new mongoose.Schema(
 	{ timestamps: true },
 );
 
-applicationSchema.index({ userId: 1, status: 1, createdAt: -1 });
+interviewSchema.index({ userId: 1, application: 1, createdAt: -1 });
 
-const Application = mongoose.model("Application", applicationSchema);
+const Interview = mongoose.model("Interview", interviewSchema);
 
-export default Application;
+export default Interview;

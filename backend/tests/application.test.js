@@ -26,9 +26,9 @@ beforeEach(async () => {
 
 // Create application
 // Valid input
-test("POST /api/application creates application", async () => {
+test("POST /api/applications creates application", async () => {
 	const response = await request(app)
-		.post("/api/application")
+		.post("/api/applications")
 		.set("Authorization", `Bearer ${token}`)
 		.send({
 			companyName: "Test company",
@@ -43,9 +43,9 @@ test("POST /api/application creates application", async () => {
 
 // Valid input
 // With application link and note
-test("POST /api/application creates application with link & notes", async () => {
+test("POST /api/applications creates application with link & notes", async () => {
 	const response = await request(app)
-		.post("/api/application")
+		.post("/api/applications")
 		.set("Authorization", `Bearer ${token}`)
 		.send({
 			companyName: "Test company",
@@ -62,9 +62,9 @@ test("POST /api/application creates application with link & notes", async () => 
 
 // Invalid input
 // Empty body
-test("POST /api/application gives error for empty body", async () => {
+test("POST /api/applications gives error for empty body", async () => {
 	const response = await request(app)
-		.post("/api/application")
+		.post("/api/applications")
 		.set("Authorization", `Bearer ${token}`)
 		.send({});
 
@@ -73,9 +73,9 @@ test("POST /api/application gives error for empty body", async () => {
 });
 
 // Invalid felids
-test("POST /api/application gives error for invalid (less than 2 letters) company name", async () => {
+test("POST /api/applications gives error for invalid (less than 2 letters) company name", async () => {
 	const response = await request(app)
-		.post("/api/application")
+		.post("/api/applications")
 		.set("Authorization", `Bearer ${token}`)
 		.send({
 			companyName: "",
@@ -88,9 +88,9 @@ test("POST /api/application gives error for invalid (less than 2 letters) compan
 	assert.equal(response.statusCode, 500);
 });
 
-test("POST /api/application gives error for invalid (less than 2 letters) role", async () => {
+test("POST /api/applications gives error for invalid (less than 2 letters) role", async () => {
 	const response = await request(app)
-		.post("/api/application")
+		.post("/api/applications")
 		.set("Authorization", `Bearer ${token}`)
 		.send({
 			companyName: "Test company",
@@ -103,9 +103,26 @@ test("POST /api/application gives error for invalid (less than 2 letters) role",
 	assert.equal(response.statusCode, 500);
 });
 
-test("PUT /api/application gives error for invalid input", async () => {
+test("GET /api/applications gives proper output", async () => {
+	await request(app)
+		.post("/api/applications")
+		.set("Authorization", `Bearer ${token}`)
+		.send({
+			companyName: "Test company",
+			role: "Software Developer",
+			appliedDate: "2026-09-15",
+		});
 	const response = await request(app)
-		.put("/api/application/65f1a2b3c4d5e6f7a8b9c0d1")
+		.get("/api/applications")
+		.set("Authorization", `Bearer ${token}`);
+
+	assert.equal(response.statusCode, 200);
+	assert.equal(response.body.data[0].companyName, "Test company");
+});
+
+test("PUT /api/applications gives error for invalid input", async () => {
+	const response = await request(app)
+		.put("/api/applications/65f1a2b3c4d5e6f7a8b9c0d1")
 		.set("Authorization", `Bearer ${token}`)
 		.send({ companyName: "Google" });
 
@@ -113,9 +130,9 @@ test("PUT /api/application gives error for invalid input", async () => {
 	assert.equal(response.body.message, "Application not found");
 });
 
-test("DELETE /api/application gives error for invalid input", async () => {
+test("DELETE /api/applications gives error for invalid input", async () => {
 	const response = await request(app)
-		.delete("/api/application/65f1a2b3c4d5e6f7a8b9c0d1")
+		.delete("/api/applications/65f1a2b3c4d5e6f7a8b9c0d1")
 		.set("Authorization", `Bearer ${token}`)
 		.send({});
 
