@@ -15,6 +15,7 @@ export const createApplication = async (req, res, next) => {
 		const data = await applicationService.createApplication(user, body);
 
 		res.status(201).json({
+			success: true,
 			message: "Application created successfully",
 			data,
 		});
@@ -36,6 +37,7 @@ export const readApplications = async (req, res, next) => {
 			await applicationService.findApplications(user, skip, limit);
 
 		res.status(200).json({
+			success: true,
 			data: applications,
 			totalApplications,
 			currentPage: page,
@@ -66,6 +68,7 @@ export const updateApplication = async (req, res, next) => {
 		);
 
 		res.status(200).json({
+			success: true,
 			message: "Application updated successfully",
 			data,
 		});
@@ -85,8 +88,24 @@ export const deleteApplication = async (req, res, next) => {
 		);
 
 		res.status(200).json({
+			success: true,
 			message: "Application deleted successfully",
 			data,
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const applicationStats = async (req, res, next) => {
+	try {
+		const user = req.user;
+
+		const stats = await applicationService.applicationsStats(user);
+
+		res.status(200).json({
+			success: true,
+			stats,
 		});
 	} catch (error) {
 		next(error);

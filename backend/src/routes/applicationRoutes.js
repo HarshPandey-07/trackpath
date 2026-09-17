@@ -7,6 +7,8 @@ const router = express.Router();
 router.post("/", authMiddleware, applicationController.createApplication);
 router.get("/", authMiddleware, applicationController.readApplications);
 
+router.get("/stats", authMiddleware, applicationController.applicationStats);
+
 router.put("/:id", authMiddleware, applicationController.updateApplication);
 router.delete("/:id", authMiddleware, applicationController.deleteApplication);
 
