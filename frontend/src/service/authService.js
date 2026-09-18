@@ -44,3 +44,19 @@ export const logout = async () => {
 
 	return data;
 };
+
+export const refresh = async () => {
+	const res = await fetch("/api/auth/refresh", {
+		method: "POST",
+		credentials: "include",
+	});
+
+	if (res.status === 401 || !res.ok) {
+		throw new Error("Failed to refresh authentication");
+	}
+
+	const data = await res.json();
+	const token = data.token;
+
+	return token;
+};

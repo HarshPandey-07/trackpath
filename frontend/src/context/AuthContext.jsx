@@ -1,4 +1,6 @@
 import { createContext, useEffect, useState } from "react";
+import { refresh } from "../service/authService";
+import { apiClient } from "../service/apiClient";
 
 export const AuthContext = createContext(null);
 
@@ -12,41 +14,12 @@ const AuthProvider = ({ children }) => {
 		const initializeAuth = async () => {
 			try {
 				// Get a new access token using the refresh token cookie
-				const refreshResponse = await fetch("/api/auth/refresh", {
-					method: "POST",
-					credentials: "include",
-				});
-
-				if (refreshResponse.status === 401) {
-					setUser(null);
-					setToken(null);
-					return;
-				}
-
-				if (!refreshResponse.ok) {
-					throw new Error("Failed to refresh authentication");
-				}
-
-				const refreshData = await refreshResponse.json();
-				const accessToken = refreshData.token;
+				const accessToken = await refresh();
 
 				setToken(accessToken);
 
 				// Get current user
-				const meResponse = await fetch("/api/auth/me", {
-					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
-					credentials: "include",
-				});
-
-				if (!meResponse.ok) {
-					setUser(null);
-					setToken(null);
-					return;
-				}
-
-				const meData = await meResponse.json();
+				const meData = await apiClient("/api/auth/me", token, setToken);
 				setUser(meData);
 			} catch (error) {
 				console.error("Authentication initialization failed:", error);

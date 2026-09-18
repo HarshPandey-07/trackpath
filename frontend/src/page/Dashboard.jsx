@@ -1,10 +1,30 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import StatCard from "../component/StatCard";
 import { Link } from "react-router-dom";
+import { dashboardStats } from "../service/dashboardService";
 
 const Dashboard = () => {
-	const { user } = useContext(AuthContext);
+	const { user, token, setToken } = useContext(AuthContext);
+	const [applicationStats, setApplicationStats] = useState(null);
+	const [interviewStats, setInterviewStats] = useState(null);
+
+	useEffect(() => {
+		const initializeStats = async () => {
+			if (!token) return;
+			try {
+				const { applicationStats, interviewStats } =
+					await dashboardStats(token, setToken);
+				setApplicationStats(applicationStats);
+				setInterviewStats(interviewStats);
+			} catch (error) {
+				console.log(`Failed to load dashboard stats ${error}`);
+			}
+		};
+
+		initializeStats();
+	}, [token, setToken]);
+
 	const interviews = [
 		// Mock data
 		{
@@ -72,10 +92,16 @@ const Dashboard = () => {
 
 			{/* Stats for the user */}
 			<div className="flex flex-col md:flex-row justify-center align-middle gap-2 md:gap-6">
-				<StatCard title={"Total Applications"} value={25} />
-				<StatCard title={"Interview"} value={5} />
-				<StatCard title={"Offers"} value={1} />
-				<StatCard title={"Active Applications"} value={18} />
+				<StatCard
+					title={"Total Applications"}
+					value={applicationStats?.total}
+				/>
+				<StatCard title={"Interview"} value={interviewStats?.total} />
+				<StatCard title={"Offers"} value={applicationStats?.selected} />
+				<StatCard
+					title={"Active Applications"}
+					value={applicationStats?.applied}
+				/>
 			</div>
 
 			{/* Deadlines section */}
