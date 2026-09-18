@@ -2,16 +2,18 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import StatCard from "../component/StatCard";
 import { Link } from "react-router-dom";
-import { dashboardStats } from "../service/dashboardService";
+import { dashboardData, dashboardStats } from "../service/dashboardService";
 
 const Dashboard = () => {
 	const { user, token, setToken } = useContext(AuthContext);
 	const [applicationStats, setApplicationStats] = useState(null);
 	const [interviewStats, setInterviewStats] = useState(null);
 
+	const [applications, setApplications] = useState(null);
+	const [interviews, setInterviews] = useState(null);
+
 	useEffect(() => {
 		const initializeStats = async () => {
-			if (!token) return;
 			try {
 				const { applicationStats, interviewStats } =
 					await dashboardStats(token, setToken);
@@ -22,26 +24,24 @@ const Dashboard = () => {
 			}
 		};
 
+		const initializeData = async () => {
+			try {
+				const { applications, interviews } = await dashboardData(
+					token,
+					setToken,
+				);
+				setApplications(applications);
+				setInterviews(interviews);
+				console.log(applications, interviews);
+			} catch (error) {
+				console.log(`Failed to load dashboard data ${error}`);
+			}
+		};
+
 		initializeStats();
+		initializeData();
 	}, [token, setToken]);
 
-	const interviews = [
-		// Mock data
-		{
-			id: 1,
-			company: "Google",
-			role: "Software Engineer Intern",
-			round: "Technical round",
-			date: "25 May 2026, 10:00AM",
-		},
-		{
-			id: 2,
-			company: "Amazon",
-			role: "SDE Intern",
-			round: "HR round",
-			date: "20 Sep 2026, 02:00PM",
-		},
-	];
 	const deadlines = [
 		// Mock data
 		{
@@ -55,37 +55,7 @@ const Dashboard = () => {
 			date: "20 Sep 2026",
 		},
 	];
-	const applications = [
-		// Mock data
-		{
-			id: 1,
-			company: "TCS",
-			role: "Developer",
-			status: "Applied",
-			appliedOn: "10 May 2026",
-		},
-		{
-			id: 2,
-			company: "TCS",
-			role: "Developer",
-			status: "Applied",
-			appliedOn: "10 May 2026",
-		},
-		{
-			id: 3,
-			company: "TCS",
-			role: "Developer",
-			status: "Applied",
-			appliedOn: "10 May 2026",
-		},
-		{
-			id: 4,
-			company: "TCS",
-			role: "Developer",
-			status: "Applied",
-			appliedOn: "10 May 2026",
-		},
-	];
+
 	return (
 		<div className="space-y-6">
 			<h2>Welcome back, {user.name} 👋</h2>
@@ -114,13 +84,13 @@ const Dashboard = () => {
 							View all
 						</Link>
 					</div>
-					{interviews.length !== 0 ? (
+					{interviews?.length > 0 ? (
 						interviews.map((interview) => (
 							<div
-								key={interview.id}
+								key={interview._id}
 								className="p-0.5 md:p-1 border-b border-(--border)"
 							>
-								<h3>{interview.company}</h3>
+								<h3>{interview.application?.companyName}</h3>
 								<h4>
 									{interview.role} - {interview.round}
 								</h4>
@@ -140,7 +110,7 @@ const Dashboard = () => {
 							View all
 						</Link>
 					</div>
-					{deadlines.length !== 0 ? (
+					{deadlines.length > 0 ? (
 						deadlines.map((deadline) => (
 							<div
 								key={deadline.id}
@@ -170,17 +140,17 @@ const Dashboard = () => {
 					<h3 className="w-1/4 text-(--text-secondary)">Role</h3>
 					<h3 className="w-1/4 text-(--text-secondary)">Status</h3>
 					<h3 className="w-1/4 text-(--text-secondary)">
-						Applied On
+						Applied Date
 					</h3>
 				</div>
 				<div className="border-b border-(--border) m-2"></div>
-				{applications.length !== 0 ? (
+				{applications?.length > 0 ? (
 					applications.map((application) => (
-						<div key={application.id} className="flex gap-4">
-							<h3 className="w-1/4">{application.company}</h3>
+						<div key={application._id} className="flex gap-4">
+							<h3 className="w-1/4">{application.companyName}</h3>
 							<h3 className="w-1/4">{application.role}</h3>
 							<h3 className="w-1/4">{application.status}</h3>
-							<h3 className="w-1/4">{application.appliedOn}</h3>
+							<h3 className="w-1/4">{application.appliedDate}</h3>
 						</div>
 					))
 				) : (
