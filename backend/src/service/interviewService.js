@@ -1,11 +1,56 @@
+import mongoose from "mongoose";
 import Interview from "../model/Interview.js";
+import Application from "../model/Application.js";
 
 // Create Interview
 export const createInterview = async (user, interviewData) => {
-	return await Interview.create({
-		...interviewData,
-		userId: user.userId,
-	});
+	const session = await mongoose.startSession();
+
+	try {
+		let interview;
+
+		// Transaction Session
+		await session.withTransaction(async () => {
+			const application = await Application.findOne({
+				_id: interviewData.application,
+				userId: user.userId,
+			}).session(session);
+
+			if (!application) {
+				const error = new Error("Application not found");
+				error.statusCode = 404;
+				throw error;
+			}
+
+			// Cannot add interview if "Rejected" or "Selected"
+			if (["Rejected", "Selected"].includes(application.status)) {
+				const error = new Error(
+					`Cannot create interview for ${application.status} application`,
+				);
+				error.statusCode = 400;
+				throw error;
+			}
+
+			// Updates status only first time
+			if (application.status === "Applied") {
+				application.status = "Interview";
+				await application.save({ session });
+			}
+
+			interview = new Interview({
+				...interviewData,
+				userId: user.userId,
+				application: application._id,
+			});
+
+			await interview.save({ session });
+		});
+
+		return interview;
+	} finally {
+		// End the Transaction session no matter what happens
+		await session.endSession();
+	}
 };
 
 // Find all interviews of user
