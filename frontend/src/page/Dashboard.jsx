@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import StatCard from "../component/StatCard";
 import { Link } from "react-router-dom";
 import { dashboardData, dashboardStats } from "../service/dashboardService";
+import { formatDateOnly, formatDateTime } from "../utils/formatter.js";
 
 const Dashboard = () => {
 	const { user, token, setToken } = useContext(AuthContext);
@@ -32,7 +33,6 @@ const Dashboard = () => {
 				);
 				setApplications(applications);
 				setInterviews(interviews);
-				console.log(applications, interviews);
 			} catch (error) {
 				console.log(`Failed to load dashboard data ${error}`);
 			}
@@ -63,7 +63,7 @@ const Dashboard = () => {
 			{/* Deadlines section */}
 			<div className="flex flex-col md:flex-row justify-center items-start gap-6">
 				{/* Interview deadlines */}
-				<div className="bg-(--cards) md:w-96 p-4 space-y-2 rounded-xl border border-(--border) shadow-(--shadow)">
+				<div className="bg-(--cards) md:w-96 p-4 space-y-1 rounded-xl border border-(--border) shadow-(--shadow)">
 					<div className="flex justify-between">
 						<h2>Upcoming Interviews</h2>
 						<Link className="text-blue-500 hover:underline">
@@ -78,9 +78,10 @@ const Dashboard = () => {
 							>
 								<h3>{interview.application?.companyName}</h3>
 								<h4>
-									{interview.role} - {interview.round}
+									{interview.application?.role} -{" "}
+									{interview.round}
 								</h4>
-								<p>{interview.date}</p>
+								<p>{formatDateTime(interview.date)}</p>
 							</div>
 						))
 					) : (
@@ -89,21 +90,21 @@ const Dashboard = () => {
 				</div>
 
 				{/* Applications deadlines */}
-				<div className="bg-(--cards) md:w-96 p-4 space-y-2 rounded-xl border border-(--border) shadow-(--shadow)">
+				<div className="bg-(--cards) md:w-96 p-4 space-y-1 rounded-xl border border-(--border) shadow-(--shadow)">
 					<div className="flex justify-between gap-4 md:gap-0">
 						<h2>Upcoming Deadlines</h2>
 						<Link className="text-blue-500 hover:underline">
 							View all
 						</Link>
 					</div>
-					{interviews?.length > 0 ? (
-						interviews.map((interview) => (
+					{applications?.length > 0 ? (
+						applications.map((application) => (
 							<div
-								key={interview._id}
+								key={application._id}
 								className="p-0.5 md:p-1 border-b border-(--border)"
 							>
-								<h3>{interview.application?.companyName}</h3>
-								<p>{interview.date}</p>
+								<h3>{application.companyName}</h3>
+								<p>{formatDateOnly(application.appliedDate)}</p>
 							</div>
 						))
 					) : (
@@ -136,7 +137,9 @@ const Dashboard = () => {
 							<h3 className="w-1/4">{application.companyName}</h3>
 							<h3 className="w-1/4">{application.role}</h3>
 							<h3 className="w-1/4">{application.status}</h3>
-							<h3 className="w-1/4">{application.appliedDate}</h3>
+							<h3 className="w-1/4">
+								{formatDateOnly(application.appliedDate)}
+							</h3>
 						</div>
 					))
 				) : (
