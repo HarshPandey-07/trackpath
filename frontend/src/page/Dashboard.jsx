@@ -42,20 +42,6 @@ const Dashboard = () => {
 		initializeData();
 	}, [token, setToken]);
 
-	const deadlines = [
-		// Mock data
-		{
-			id: 1,
-			name: "Deloitte Application",
-			date: "25 May 2026",
-		},
-		{
-			id: 2,
-			name: "Flipkart Online Test",
-			date: "20 Sep 2026",
-		},
-	];
-
 	return (
 		<div className="space-y-6">
 			<h2>Welcome back, {user.name} 👋</h2>
@@ -110,14 +96,14 @@ const Dashboard = () => {
 							View all
 						</Link>
 					</div>
-					{deadlines.length > 0 ? (
-						deadlines.map((deadline) => (
+					{interviews?.length > 0 ? (
+						interviews.map((interview) => (
 							<div
-								key={deadline.id}
+								key={interview._id}
 								className="p-0.5 md:p-1 border-b border-(--border)"
 							>
-								<h3>{deadline.name}</h3>
-								<p>{deadline.date}</p>
+								<h3>{interview.application?.companyName}</h3>
+								<p>{interview.date}</p>
 							</div>
 						))
 					) : (
