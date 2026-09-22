@@ -64,6 +64,7 @@ const Applications = () => {
 					<option>Shortlisted</option>
 					<option>Interview</option>
 					<option>Rejected</option>
+					<option>Selected</option>
 				</select>
 			</div>
 
@@ -83,6 +84,8 @@ const Applications = () => {
 						<h3 className="w-1/4 text-(--text-secondary)">
 							Status
 						</h3>
+
+						<h3 className="w-1/4 text-(--text-secondary)">Type</h3>
 
 						<h3 className="w-1/4 text-(--text-secondary)">
 							Applied On
@@ -128,6 +131,10 @@ const Applications = () => {
 									>
 										{application.status}
 									</span>
+								</div>
+
+								<div className="w-1/4">
+									<p>{application.type}</p>
 								</div>
 
 								<div className="w-1/4">

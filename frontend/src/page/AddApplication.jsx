@@ -53,7 +53,7 @@ const AddApplication = () => {
 							<label className="block mb-1">Status</label>
 							<select className="w-full p-2 rounded border border-(--border) bg-(--bg) text-(--text-primary) outline-none">
 								<option>Applied</option>
-								<option>Assessment</option>
+								<option>Shortlisted</option>
 								<option>Interview</option>
 								<option>Rejected</option>
 								<option>Selected</option>
@@ -73,7 +73,7 @@ const AddApplication = () => {
 						<label className="block mb-1">Job Link</label>
 						<input
 							type="url"
-							placeholder="https://example.com/job"
+							placeholder="https://example.com/job (optional)"
 							className="w-full p-2 rounded border border-(--border) bg-(--bg) text-(--text-primary) outline-none"
 						/>
 					</div>
@@ -82,7 +82,7 @@ const AddApplication = () => {
 						<label className="block mb-1">Notes</label>
 						<textarea
 							rows="4"
-							placeholder="Add notes..."
+							placeholder="Add notes... (optional)"
 							className="w-full p-2 rounded border border-(--border) bg-(--bg) text-(--text-primary) outline-none"
 						></textarea>
 					</div>

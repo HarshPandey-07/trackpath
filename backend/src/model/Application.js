@@ -20,6 +20,11 @@ const applicationSchema = new mongoose.Schema(
 			minLength: 2,
 			maxLength: 100,
 		},
+		type: {
+			type: String,
+			enum: ["Internship", "Placement"],
+			default: "Internship",
+		},
 		status: {
 			type: String,
 			enum: [

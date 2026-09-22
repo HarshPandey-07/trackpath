@@ -56,6 +56,11 @@ const ApplicationDetails = () => {
 				</div>
 
 				<div>
+					<p className="text-(--text-secondary)">Type</p>
+					<h3>{application?.type}</h3>
+				</div>
+
+				<div>
 					<p className="text-(--text-secondary)">Applied On</p>
 					<h3>{formatDateOnly(application?.appliedDate)}</h3>
 				</div>
