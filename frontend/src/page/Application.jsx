@@ -1,65 +1,30 @@
+import { AuthContext } from "../context/AuthContext";
 import { Plus, Search } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getApplications } from "../service/applicationService";
+import { formatDateOnly } from "../utils/formatter.js";
 
 const Applications = () => {
-	const applications = [
-		{
-			id: 1,
-			company: "Google",
-			role: "SDE Intern",
-			type: "Internship",
-			status: "Interview",
-			appliedOn: "10 May 2025",
-		},
-		{
-			id: 2,
-			company: "Microsoft",
-			role: "SDE Intern",
-			type: "Internship",
-			status: "Selected",
-			appliedOn: "12 May 2025",
-		},
-		{
-			id: 3,
-			company: "TCS",
-			role: "Developer",
-			type: "Placement",
-			status: "Applied",
-			appliedOn: "15 May 2025",
-		},
-		{
-			id: 4,
-			company: "Infosys",
-			role: "Systems Engineer",
-			type: "Placement",
-			status: "Shortlisted",
-			appliedOn: "18 May 2025",
-		},
-		{
-			id: 5,
-			company: "Amazon",
-			role: "SDE Intern",
-			type: "Internship",
-			status: "Interview",
-			appliedOn: "20 May 2025",
-		},
-		{
-			id: 6,
-			company: "Deloitte",
-			role: "Analyst Intern",
-			type: "Internship",
-			status: "Applied",
-			appliedOn: "22 May 2025",
-		},
-		{
-			id: 7,
-			company: "Accenture",
-			role: "ASE",
-			type: "Placement",
-			status: "Rejected",
-			appliedOn: "23 May 2025",
-		},
-	];
+	const { token, setToken } = useContext(AuthContext);
+	const [applications, setApplications] = useState(null);
+	const [pageData, setPageData] = useState(null);
+
+	useEffect(() => {
+		const initializeData = async () => {
+			try {
+				const { applications, pageData } = await getApplications(
+					token,
+					setToken,
+				);
+				setApplications(applications);
+				setPageData(pageData);
+			} catch (error) {
+				console.log(`Failed to load data ${error}`);
+			}
+		};
+		initializeData();
+	}, [token, setToken]);
 
 	return (
 		<div className="space-y-6">
@@ -126,23 +91,24 @@ const Applications = () => {
 
 					{/* APPLICATIONS */}
 
-					{applications.map((application) => (
-						<Link
-							to={`/application/${application.id}`}
-							key={application.id}
-							className="flex items-center gap-4 pl-2 py-3 border-b rounded-xl border-(--border) hover:bg-(--bg) transition-all duration-150"
-						>
-							<div className="w-1/4">
-								<p>{application.company}</p>
-							</div>
+					{applications?.length > 0 ? (
+						applications.map((application) => (
+							<Link
+								to={`/application/${application._id}`}
+								key={application._id}
+								className="flex items-center text-(--text-primary) gap-4 pl-2 py-3 border-b rounded-xl border-(--border) hover:bg-(--bg) transition-all duration-150"
+							>
+								<div className="w-1/4">
+									<p>{application.companyName}</p>
+								</div>
 
-							<div className="w-1/4">
-								<p>{application.role}</p>
-							</div>
+								<div className="w-1/4">
+									<p>{application.role}</p>
+								</div>
 
-							<div className="w-1/4">
-								<span
-									className={`
+								<div className="w-1/4">
+									<span
+										className={`
 										px-2 py-1 rounded text-xs
 										${
 											application.status === "Selected"
@@ -159,21 +125,28 @@ const Applications = () => {
 															: "bg-red-100 text-red-500"
 										}
 									`}
-								>
-									{application.status}
-								</span>
-							</div>
+									>
+										{application.status}
+									</span>
+								</div>
 
-							<div className="w-1/4">
-								<p>{application.appliedOn}</p>
-							</div>
-						</Link>
-					))}
+								<div className="w-1/4">
+									<p>
+										{formatDateOnly(
+											application.appliedDate,
+										)}
+									</p>
+								</div>
+							</Link>
+						))
+					) : (
+						<i>No Applications found</i>
+					)}
 
 					{/* FOOTER */}
 
 					<p className="pt-3 text-xs">
-						Showing 1 to {applications.length} applications
+						Showing 1 to {pageData?.totalPages} pages
 					</p>
 				</div>
 			</div>
