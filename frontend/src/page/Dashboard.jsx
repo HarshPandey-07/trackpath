@@ -93,7 +93,10 @@ const Dashboard = () => {
 				<div className="bg-(--cards) md:w-96 p-4 space-y-1 rounded-xl border border-(--border) shadow-(--shadow)">
 					<div className="flex justify-between gap-4 md:gap-0">
 						<h2>Upcoming Deadlines</h2>
-						<Link className="text-blue-500 hover:underline">
+						<Link
+							to={"/application"}
+							className="text-blue-500 hover:underline"
+						>
 							View all
 						</Link>
 					</div>
@@ -117,7 +120,10 @@ const Dashboard = () => {
 			<div className="bg-(--cards) w-full p-4 space-y-2 rounded-xl border border-(--border) shadow-(--shadow)">
 				<div className="flex justify-between">
 					<h2>Recent Applications</h2>
-					<Link className="text-blue-500 hover:underline">
+					<Link
+						to={"/application"}
+						className="text-blue-500 hover:underline"
+					>
 						View all
 					</Link>
 				</div>
@@ -136,7 +142,28 @@ const Dashboard = () => {
 						<div key={application._id} className="flex gap-4">
 							<h3 className="w-1/4">{application.companyName}</h3>
 							<h3 className="w-1/4">{application.role}</h3>
-							<h3 className="w-1/4">{application.status}</h3>
+							<h3 className="w-1/4">
+								<span
+									className={`w-1/4 px-2 py-1 rounded
+										${
+											application.status === "Selected"
+												? "bg-green-100 text-green-600"
+												: application.status ===
+													  "Interview"
+													? "bg-(--accent-bg) text-(--accent)"
+													: application.status ===
+														  "Shortlisted"
+														? "bg-amber-200 text-amber-600"
+														: application.status ===
+															  "Applied"
+															? "bg-blue-100 text-blue-600"
+															: "bg-red-100 text-red-500"
+										}
+									`}
+								>
+									{application.status}
+								</span>
+							</h3>
 							<h3 className="w-1/4">
 								{formatDateOnly(application.appliedDate)}
 							</h3>
