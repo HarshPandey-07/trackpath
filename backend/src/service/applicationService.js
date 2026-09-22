@@ -24,6 +24,16 @@ export const findApplications = async (user, skip, limit) => {
 	return { applications, totalApplications };
 };
 
+// Get application by id
+export const findApplicationById = async (user, applicationId) => {
+	const application = await Application.findOne({
+		_id: applicationId,
+		userId: user.userId, // User only gets their own data
+	});
+
+	return application;
+};
+
 // Update application
 export const updateApplication = async (user, id, updatedData) => {
 	const application = await Application.findOneAndUpdate(
