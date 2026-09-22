@@ -48,6 +48,25 @@ export const readApplications = async (req, res, next) => {
 	}
 };
 
+export const readApplicationById = async (req, res, next) => {
+	try {
+		const user = req.user;
+		const applicationId = req.params.id;
+
+		const application = await applicationService.findApplicationById(
+			user,
+			applicationId,
+		);
+
+		res.status(200).json({
+			success: true,
+			data: application,
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
 export const updateApplication = async (req, res, next) => {
 	try {
 		const applicationId = req.params.id;

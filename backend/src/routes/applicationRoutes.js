@@ -9,6 +9,7 @@ router.get("/", authMiddleware, applicationController.readApplications);
 
 router.get("/stats", authMiddleware, applicationController.applicationStats);
 
+router.get("/:id", authMiddleware, applicationController.readApplicationById);
 router.put("/:id", authMiddleware, applicationController.updateApplication);
 router.delete("/:id", authMiddleware, applicationController.deleteApplication);
 

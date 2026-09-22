@@ -11,3 +11,15 @@ export const getApplications = async (token, setToken) => {
 
 	return { applications, pageData };
 };
+
+export const getApplicationById = async (token, setToken, applicationId) => {
+	const applicationRes = await apiClient(
+		`/api/applications/${applicationId}`,
+		token,
+		setToken,
+	);
+
+	const application = applicationRes.data;
+
+	return application;
+};

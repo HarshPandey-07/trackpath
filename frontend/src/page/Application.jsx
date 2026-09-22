@@ -146,7 +146,8 @@ const Applications = () => {
 					{/* FOOTER */}
 
 					<p className="pt-3 text-xs">
-						Showing 1 to {pageData?.totalPages} pages
+						Showing {pageData?.currentPage} to{" "}
+						{pageData?.totalPages} pages
 					</p>
 				</div>
 			</div>
