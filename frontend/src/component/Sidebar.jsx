@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { logout } from "../service/authService";
 import { ChevronRight } from "lucide-react";
+import toast from "react-hot-toast";
 const Sidebar = () => {
 	const { user, setUser, setToken, showSidebar, setShowSidebar } =
 		useContext(AuthContext);
@@ -19,9 +20,11 @@ const Sidebar = () => {
 			setToken(null);
 			setUser(null);
 
+			toast.success("Logout successful");
+
 			navigate("/login");
 		} catch (error) {
-			console.log(`Error while logging out: ${error.message}`);
+			toast.error(`Error while logging out: ${error.message}`);
 		}
 	};
 
@@ -66,14 +69,9 @@ const Sidebar = () => {
 					</div>
 					<div className="mt-auto mb-6 flex flex-col text-center gap-2">
 						<div className="w-full border-t border-slate-600 my-2"></div>
-						<NavLink
-							to={"/login"} // For test purpose later add
-							className={({ isActive }) =>
-								`${isActive ? "bg-(--accent) text-(--text-primary)" : ""} p-2 w-full rounded hover:bg-(--accent-bg)`
-							}
-						>
+						<div className="text-(--text-primary) p-2 w-full rounded cursor-pointer hover:bg-(--accent-bg)">
 							{user?.name ? user?.name : "Profile"}
-						</NavLink>
+						</div>
 						<button
 							className="button-red"
 							onClick={(e) => {

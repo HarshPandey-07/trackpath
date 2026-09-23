@@ -4,6 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 import { AuthContext } from "../context/AuthContext";
 import { login } from "../service/authService";
+import toast from "react-hot-toast";
 
 const Login = () => {
 	const { setUser, setToken } = useContext(AuthContext);
@@ -11,10 +12,6 @@ const Login = () => {
 	const [data, setData] = useState({
 		email: "",
 		password: "",
-	});
-	const [error, setError] = useState({
-		status: "",
-		message: "",
 	});
 	const navigate = useNavigate();
 
@@ -36,9 +33,11 @@ const Login = () => {
 			setUser(response.user);
 			setToken(response.token);
 
+			toast.success("Logged in successfully");
+
 			navigate("/");
 		} catch (error) {
-			setError(error);
+			toast.error(`Something went wrong ${error}`);
 		}
 	};
 
@@ -50,10 +49,7 @@ const Login = () => {
 			</aside>
 
 			<main className="flex justify-center align-middle gap-4 bg-(--cards) flex-col flex-1 p-8 border md:border-0 border-(--border)">
-				<div className="flex justify-between align-middle">
-					<h2>Login</h2>
-					<p className={"text-red-500"}>{error && error?.message}</p>
-				</div>
+				<h2>Login</h2>
 
 				<div className="flex justify-center align-middle flex-col gap-1">
 					<label htmlFor="email">Email</label>

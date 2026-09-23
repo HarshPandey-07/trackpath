@@ -1,5 +1,6 @@
 import { AuthContext } from "../context/AuthContext";
-import { Plus, Search } from "lucide-react";
+import { Plus } from "lucide-react";
+// import { Plus, Search } from "lucide-react"; // Read the comment below in search and filter section of this page below
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getApplications } from "../service/applicationService";
@@ -46,7 +47,9 @@ const Applications = () => {
 
 			{/* SEARCH + FILTER */}
 
-			<div className="flex flex-col md:flex-row gap-4">
+			{/* I'm keeping this code as a comment so that if the backend has these features it could be added easily */}
+
+			{/* <div className="flex flex-col md:flex-row gap-4">
 				<div className="flex flex-row gap-2 w-full md:flex-1 p-2 rounded border border-(--border) bg-(--cards) text-(--text-primary) focus:border-(--accent)">
 					<span>
 						<Search />
@@ -66,7 +69,7 @@ const Applications = () => {
 					<option>Rejected</option>
 					<option>Selected</option>
 				</select>
-			</div>
+			</div> */}
 
 			{/* APPLICATION TABLE */}
 
