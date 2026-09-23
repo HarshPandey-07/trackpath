@@ -10,11 +10,13 @@ const Applications = () => {
 	const { token, setToken } = useContext(AuthContext);
 	const [applications, setApplications] = useState(null);
 	const [pageData, setPageData] = useState(null);
+	const [page, setPage] = useState(1);
 
 	useEffect(() => {
 		const initializeData = async () => {
 			try {
 				const { applications, pageData } = await getApplications(
+					page,
 					token,
 					setToken,
 				);
@@ -25,7 +27,16 @@ const Applications = () => {
 			}
 		};
 		initializeData();
-	}, [token, setToken]);
+	}, [page, token, setToken]);
+
+	const pageForward = (e) => {
+		e.preventDefault();
+		if (pageData?.totalPages > page) setPage(page + 1);
+	};
+	const pageBackward = (e) => {
+		e.preventDefault();
+		if (page !== 0) setPage(page - 1);
+	};
 
 	return (
 		<div className="space-y-6">
@@ -155,10 +166,26 @@ const Applications = () => {
 
 					{/* FOOTER */}
 
-					<p className="pt-3 text-xs">
-						Showing {pageData?.currentPage} to{" "}
-						{pageData?.totalPages} pages
-					</p>
+					<div className="flex justify-between pt-3 px-2">
+						<p className="text-xs">
+							Showing {pageData?.currentPage} to{" "}
+							{pageData?.totalPages} pages
+						</p>
+						<div className="flex justify-between gap-4">
+							<button
+								onClick={pageBackward}
+								className={`no-design-button text-blue-500! cursor-pointer hover:underline ${page === 1 ? "hidden" : ""}`}
+							>
+								Previous
+							</button>
+							<button
+								onClick={pageForward}
+								className={`no-design-button text-blue-500! cursor-pointer hover:underline ${pageData?.totalPages === page ? "hidden" : ""}`}
+							>
+								Next
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

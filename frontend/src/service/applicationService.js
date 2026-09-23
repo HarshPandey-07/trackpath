@@ -1,8 +1,8 @@
 import { apiClient } from "./apiClient.js";
 
-export const getApplications = async (token, setToken) => {
+export const getApplications = async (page, token, setToken) => {
 	const applicationRes = await apiClient(
-		"/api/applications?page=1&limit=7",
+		`/api/applications?page=${page}&limit=7`,
 		token,
 		setToken,
 	);

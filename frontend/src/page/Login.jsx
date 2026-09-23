@@ -74,10 +74,7 @@ const Login = () => {
 							onChange={handleChange}
 							className="outline-none flex-1"
 						/>
-						<button
-							onClick={handleShowPassword}
-							className="password-button"
-						>
+						<button onClick={handleShowPassword}>
 							{showPassword ? (
 								<EyeOff size={20} />
 							) : (
