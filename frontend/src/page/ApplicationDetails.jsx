@@ -85,7 +85,7 @@ const ApplicationDetails = () => {
 
 			<div className="flex gap-3">
 				<Link
-					to={`/application/add`}
+					to={`/application/edit/${id}`}
 					className="bg-(--accent) text-white px-4 py-2 rounded hover:bg-(--accent-hover)"
 				>
 					Edit Application

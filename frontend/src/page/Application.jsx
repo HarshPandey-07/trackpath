@@ -1,5 +1,6 @@
 import { AuthContext } from "../context/AuthContext";
-import { Plus, Search } from "lucide-react";
+import { Plus } from "lucide-react";
+// import { Plus, Search } from "lucide-react"; // Read the comment below in search and filter section of this page below
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getApplications } from "../service/applicationService";
@@ -9,11 +10,13 @@ const Applications = () => {
 	const { token, setToken } = useContext(AuthContext);
 	const [applications, setApplications] = useState(null);
 	const [pageData, setPageData] = useState(null);
+	const [page, setPage] = useState(1);
 
 	useEffect(() => {
 		const initializeData = async () => {
 			try {
 				const { applications, pageData } = await getApplications(
+					page,
 					token,
 					setToken,
 				);
@@ -24,7 +27,16 @@ const Applications = () => {
 			}
 		};
 		initializeData();
-	}, [token, setToken]);
+	}, [page, token, setToken]);
+
+	const pageForward = (e) => {
+		e.preventDefault();
+		if (pageData?.totalPages > page) setPage(page + 1);
+	};
+	const pageBackward = (e) => {
+		e.preventDefault();
+		if (page !== 0) setPage(page - 1);
+	};
 
 	return (
 		<div className="space-y-6">
@@ -46,7 +58,9 @@ const Applications = () => {
 
 			{/* SEARCH + FILTER */}
 
-			<div className="flex flex-col md:flex-row gap-4">
+			{/* I'm keeping this code as a comment so that if the backend has these features it could be added easily */}
+
+			{/* <div className="flex flex-col md:flex-row gap-4">
 				<div className="flex flex-row gap-2 w-full md:flex-1 p-2 rounded border border-(--border) bg-(--cards) text-(--text-primary) focus:border-(--accent)">
 					<span>
 						<Search />
@@ -66,7 +80,7 @@ const Applications = () => {
 					<option>Rejected</option>
 					<option>Selected</option>
 				</select>
-			</div>
+			</div> */}
 
 			{/* APPLICATION TABLE */}
 
@@ -152,10 +166,26 @@ const Applications = () => {
 
 					{/* FOOTER */}
 
-					<p className="pt-3 text-xs">
-						Showing {pageData?.currentPage} to{" "}
-						{pageData?.totalPages} pages
-					</p>
+					<div className="flex justify-between pt-3 px-2">
+						<p className="text-xs">
+							Showing {pageData?.currentPage} to{" "}
+							{pageData?.totalPages} pages
+						</p>
+						<div className="flex justify-between gap-4">
+							<button
+								onClick={pageBackward}
+								className={`no-design-button text-blue-500! cursor-pointer hover:underline ${page === 1 ? "hidden" : ""}`}
+							>
+								Previous
+							</button>
+							<button
+								onClick={pageForward}
+								className={`no-design-button text-blue-500! cursor-pointer hover:underline ${pageData?.totalPages === page ? "hidden" : ""}`}
+							>
+								Next
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
