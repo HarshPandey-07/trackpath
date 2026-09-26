@@ -6,7 +6,7 @@ import {
 	submitApplication,
 } from "../service/applicationService.js";
 import toast from "react-hot-toast";
-import { Pen } from "lucide-react";
+import { ChevronLeftIcon, Pen } from "lucide-react";
 
 const ApplicationForm = () => {
 	const { id } = useParams();
@@ -108,9 +108,9 @@ const ApplicationForm = () => {
 
 				<Link
 					to="/application"
-					className="p-2 rounded border border-(--border) hover:bg-(--accent-bg)"
+					className="flex flex-row gap-1 p-2 rounded border border-(--border) hover:bg-(--accent-bg)"
 				>
-					Back
+					<ChevronLeftIcon /> Back
 				</Link>
 			</div>
 
