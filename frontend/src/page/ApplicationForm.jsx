@@ -1,9 +1,12 @@
-import { apiClient } from "../service/apiClient.js";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getApplicationById } from "../service/applicationService.js";
+import {
+	getApplicationById,
+	submitApplication,
+} from "../service/applicationService.js";
 import toast from "react-hot-toast";
+import { Pen } from "lucide-react";
 
 const ApplicationForm = () => {
 	const { id } = useParams();
@@ -64,20 +67,15 @@ const ApplicationForm = () => {
 		e.preventDefault();
 
 		try {
-			const url = isEditMode
-				? `/api/applications/${id}`
-				: "/api/applications";
-			const method = isEditMode ? "PUT" : "POST";
-			await apiClient(url, token, setToken, {
-				method: method,
-				body: JSON.stringify(formData),
-			});
-
-			toast.success(
-				isEditMode
-					? "Application edited successfully!"
-					: "Application added successfully!",
+			const response = await submitApplication(
+				token,
+				setToken,
+				id,
+				isEditMode,
+				formData,
 			);
+
+			toast.success(response);
 
 			navigate("/application");
 		} catch (error) {
@@ -221,9 +219,14 @@ const ApplicationForm = () => {
 							type="submit"
 							className="bg-(--accent) text-(--text-primary) px-4 py-2 rounded hover:bg-(--accent-hover)"
 						>
-							{isEditMode
-								? "Confirm Changes"
-								: "Save Application"}
+							{isEditMode ? (
+								<span className="flex flex-row">
+									<Pen size={20} />
+									Edit
+								</span>
+							) : (
+								"Save Application"
+							)}
 						</button>
 					</div>
 				</form>

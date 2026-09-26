@@ -168,7 +168,7 @@ const Applications = () => {
 
 					<div className="flex justify-between pt-3 px-2">
 						<p className="text-xs">
-							Showing {pageData?.currentPage} to{" "}
+							Showing {pageData?.currentPage} of{" "}
 							{pageData?.totalPages} pages
 						</p>
 						<div className="flex justify-between gap-4">

@@ -1,14 +1,21 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getApplicationById } from "../service/applicationService";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+	getApplicationById,
+	removeApplication,
+} from "../service/applicationService";
 import { AuthContext } from "../context/AuthContext";
 import { formatDateOnly } from "../utils/formatter";
+import { ChevronLeftIcon, Pen, Trash } from "lucide-react";
+import toast from "react-hot-toast";
 
 const ApplicationDetails = () => {
 	const { id } = useParams();
 
 	const { token, setToken } = useContext(AuthContext);
 	const [application, setApplication] = useState(null);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const initializeData = async () => {
@@ -26,6 +33,19 @@ const ApplicationDetails = () => {
 		initializeData();
 	}, [token, setToken, id]);
 
+	const handleRemove = async (e) => {
+		e.preventDefault();
+
+		try {
+			await removeApplication(token, setToken, application._id);
+
+			toast.success("Application removed successfully");
+			navigate("/application");
+		} catch (error) {
+			toast.error(`Something went wrong: ${error}`);
+		}
+	};
+
 	return (
 		<div className="space-y-6">
 			<div className="flex justify-between items-center">
@@ -33,9 +53,9 @@ const ApplicationDetails = () => {
 
 				<Link
 					to="/application"
-					className="text-(--text-secondary) hover:text-(--accent)"
+					className="flex flex-row text-(--text-secondary) hover:text-(--accent)"
 				>
-					← Back
+					<ChevronLeftIcon /> <span>Back</span>
 				</Link>
 			</div>
 
@@ -86,17 +106,17 @@ const ApplicationDetails = () => {
 			<div className="flex gap-3">
 				<Link
 					to={`/application/edit/${id}`}
-					className="bg-(--accent) text-white px-4 py-2 rounded hover:bg-(--accent-hover)"
+					className="bg-(--accent) flex flex-row gap-1 text-white p-2 rounded hover:bg-(--accent-hover)"
 				>
-					Edit Application
+					<Pen size={20} /> Edit
 				</Link>
 
-				<Link
-					to="/application"
-					className="px-4 py-2 rounded border border-(--border) hover:bg-(--accent-bg)"
+				<button
+					onClick={handleRemove}
+					className="button-red flex flex-row gap-1"
 				>
-					Back to Applications
-				</Link>
+					<Trash size={20} /> Delete
+				</button>
 			</div>
 		</div>
 	);

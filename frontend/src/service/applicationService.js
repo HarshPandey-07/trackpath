@@ -23,3 +23,28 @@ export const getApplicationById = async (token, setToken, applicationId) => {
 
 	return application;
 };
+
+export const removeApplication = async (token, setToken, applicationId) => {
+	await apiClient(`/api/applications/${applicationId}`, token, setToken, {
+		method: "DELETE",
+	});
+};
+
+export const submitApplication = async (
+	token,
+	setToken,
+	id,
+	isEditMode,
+	formData,
+) => {
+	const url = isEditMode ? `/api/applications/${id}` : "/api/applications";
+	const method = isEditMode ? "PUT" : "POST";
+	await apiClient(url, token, setToken, {
+		method: method,
+		body: JSON.stringify(formData),
+	});
+
+	return isEditMode
+		? "Application edited successfully!"
+		: "Application added successfully!";
+};
