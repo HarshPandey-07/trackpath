@@ -64,7 +64,7 @@ const Dashboard = () => {
 			<div className="flex flex-col md:flex-row justify-center items-start gap-6">
 				{/* Interview deadlines */}
 				<div className="bg-(--cards) md:w-96 p-4 space-y-1 rounded-xl border border-(--border) shadow-(--shadow)">
-					<div className="flex justify-between">
+					<div className="flex justify-between gap-4 md:gap-0">
 						<h2>Upcoming Interviews</h2>
 						<Link className="text-blue-500 hover:underline">
 							View all
@@ -117,34 +117,44 @@ const Dashboard = () => {
 			</div>
 
 			{/* Recent Applications */}
-			<div className="bg-(--cards) w-full p-4 space-y-2 rounded-xl border border-(--border) shadow-(--shadow)">
-				<div className="flex justify-between">
-					<h2>Recent Applications</h2>
-					<Link
-						to={"/application"}
-						className="text-blue-500 hover:underline"
-					>
-						View all
-					</Link>
-				</div>
+			<div className="bg-(--cards) w-full p-4 space-y-2 rounded-xl border border-(--border) shadow-(--shadow) overflow-auto">
+				<div className="min-w-187.5">
+					<div className="flex justify-between">
+						<h2>Recent Applications</h2>
+						<Link
+							to={"/application"}
+							className="text-blue-500 hover:underline"
+						>
+							View all
+						</Link>
+					</div>
 
-				<div className="flex gap-4">
-					<h3 className="w-1/4 text-(--text-secondary)">Company</h3>
-					<h3 className="w-1/4 text-(--text-secondary)">Role</h3>
-					<h3 className="w-1/4 text-(--text-secondary)">Status</h3>
-					<h3 className="w-1/4 text-(--text-secondary)">
-						Applied Date
-					</h3>
-				</div>
-				<div className="border-b border-(--border) m-2"></div>
-				{applications?.length > 0 ? (
-					applications.map((application) => (
-						<div key={application._id} className="flex gap-4">
-							<h3 className="w-1/4">{application.companyName}</h3>
-							<h3 className="w-1/4">{application.role}</h3>
-							<h3 className="w-1/4">
-								<span
-									className={`w-1/4 px-2 py-1 rounded
+					<div className="flex gap-4">
+						<h3 className="w-1/4 text-(--text-secondary)">
+							Company
+						</h3>
+						<h3 className="w-1/4 text-(--text-secondary)">Role</h3>
+						<h3 className="w-1/4 text-(--text-secondary)">
+							Status
+						</h3>
+						<h3 className="w-1/4 text-(--text-secondary)">
+							Applied Date
+						</h3>
+					</div>
+					<div className="border-b border-(--border) m-2"></div>
+					{applications?.length > 0 ? (
+						applications.map((application) => (
+							<div
+								key={application._id}
+								className="flex gap-4 space-y-2"
+							>
+								<h3 className="w-1/4">
+									{application.companyName}
+								</h3>
+								<h3 className="w-1/4">{application.role}</h3>
+								<h3 className="w-1/4">
+									<span
+										className={`w-1/4 px-2 py-1 rounded
 										${
 											application.status === "Selected"
 												? "bg-green-100 text-green-600"
@@ -160,18 +170,19 @@ const Dashboard = () => {
 															: "bg-red-100 text-red-500"
 										}
 									`}
-								>
-									{application.status}
-								</span>
-							</h3>
-							<h3 className="w-1/4">
-								{formatDateOnly(application.appliedDate)}
-							</h3>
-						</div>
-					))
-				) : (
-					<i>No recent applications</i>
-				)}
+									>
+										{application.status}
+									</span>
+								</h3>
+								<h3 className="w-1/4">
+									{formatDateOnly(application.appliedDate)}
+								</h3>
+							</div>
+						))
+					) : (
+						<i>No recent applications</i>
+					)}
+				</div>
 			</div>
 		</div>
 	);

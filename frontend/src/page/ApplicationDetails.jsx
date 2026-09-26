@@ -71,9 +71,9 @@ const ApplicationDetails = () => {
 						href={application?.applicationLink}
 						target="_blank"
 						rel="noreferrer"
-						className={`${application?.applicationLink !== null && "hidden"} text-(--accent) hover:underline`}
+						className={`${application?.applicationLink === null && "hidden"} text-(--accent) hover:underline`}
 					>
-						View Job
+						{application?.applicationLink}
 					</a>
 				</div>
 
