@@ -32,6 +32,16 @@ const ApplicationDetails = () => {
 	const [time, setTime] = useState("");
 	const [mode, setMode] = useState("");
 
+	const interviews = [
+		{
+			companyName: "Google",
+			role: "Dev",
+			date: "Date",
+			time: "Time",
+			mode: "Mode",
+		},
+	];
+
 	useEffect(() => {
 		const initializeData = async () => {
 			try {
