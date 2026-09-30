@@ -1,3 +1,16 @@
+const getResponseData = async (res) => {
+ const text = await res. text();
+
+ if (!text) return {};
+
+ try {
+	return JSON.parse(text);
+ } catch{
+
+	return{ message: text };
+ }
+};
+
 export const register = async (user) => {
 	const res = await fetch("/api/auth/register", {
 		method: "POST",
@@ -21,7 +34,7 @@ export const login = async (user) => {
 		body: JSON.stringify(user),
 	});
 
-	const data = await res.json();
+	const data = await getResponseData(res);
 
 	if (!res.ok) {
 		throw new Error(data.message || "Login failed");
@@ -36,7 +49,7 @@ export const logout = async () => {
 		headers: { "Content-Type": "application/json" },
 	});
 
-	const data = await res.json();
+	const data = await getResponseData(res);
 
 	if (!res.ok) {
 		throw new Error(data.message || "Logout failed");

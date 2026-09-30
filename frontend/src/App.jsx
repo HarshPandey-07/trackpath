@@ -8,43 +8,58 @@ import AppLayout from "./layout/AppLayout";
 import AuthLayout from "./layout/AuthLayout";
 import RequireAuth from "./context/RequireAuth";
 import AuthProvider from "./context/AuthContext";
-
+import Application from "./page/Application";
+import AddApplication from "./page/AddApplication";
+import ApplicationDetails from "./page/ApplicationDetails";
 const router = createBrowserRouter([
-	{
-		element: <AuthLayout />,
-		children: [
-			{
-				path: "/login",
-				element: <Login />,
-			},
-			{
-				path: "/register",
-				element: <Register />,
-			},
-		],
-	},
-	{
-		element: <RequireAuth />,
-		children: [
-			{
-				element: <AppLayout />,
-				children: [
-					{
-						index: true,
-						element: <Dashboard />,
-					},
-				],
-			},
-		],
-	},
+  {
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+    ],
+  },
+
+  {
+    element: <RequireAuth />,
+    children: [
+      {
+        element: <AppLayout />,
+        children: [
+          {
+            index: true,
+            element: <Dashboard />,
+          },
+          {
+            path: "/application",
+            element: <Application />,
+          },
+          {
+            path: "/application/add",
+            element: <AddApplication />,
+          },
+          {
+            path: "/application/:id",
+            element: <ApplicationDetails />,
+          },
+        ],
+      },
+    ],
+  },
 ]);
 
 function App() {
-	return (
-		<AuthProvider>
-			<RouterProvider router={router} />
-		</AuthProvider>
-	);
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;

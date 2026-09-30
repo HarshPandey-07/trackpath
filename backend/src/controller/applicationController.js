@@ -92,3 +92,79 @@ export const deleteApplication = async (req, res, next) => {
 		next(error);
 	}
 };
+// Add Interview
+export const addInterview = async (req, res, next) => {
+	try {
+		const applicationId = req.params.id;
+		const body = req.body;
+		const user = req.user;
+
+		if (!body || Object.keys(body).length === 0) {
+			const error = new Error("Invalid request");
+			error.statusCode = 400;
+			throw error;
+		}
+
+		const data = await applicationService.addInterview(
+			user,
+			applicationId,
+			body,
+		);
+
+		res.status(201).json({
+			message: "Interview added successfully",
+			data,
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+// Get Interviews
+export const readInterviews = async (req, res, next) => {
+	try {
+		const applicationId = req.params.id;
+		const user = req.user;
+
+		const data = await applicationService.findInterviews(
+			user,
+			applicationId,
+		);
+
+		res.status(200).json({
+			data,
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+// Update Interview
+export const updateInterview = async (req, res, next) => {
+	try {
+		const applicationId = req.params.id;
+		const interviewId = req.params.interviewId;
+		const body = req.body;
+		const user = req.user;
+
+		if (!body || Object.keys(body).length === 0) {
+			const error = new Error("Invalid request");
+			error.statusCode = 400;
+			throw error;
+		}
+
+		const data = await applicationService.updateInterview(
+			user,
+			applicationId,
+			interviewId,
+			body,
+		);
+
+		res.status(200).json({
+			message: "Interview updated successfully",
+			data,
+		});
+	} catch (error) {
+		next(error);
+	}
+};

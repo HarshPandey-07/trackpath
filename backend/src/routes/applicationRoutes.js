@@ -9,5 +9,14 @@ router.get("/", authMiddleware, applicationController.readApplications);
 
 router.put("/:id", authMiddleware, applicationController.updateApplication);
 router.delete("/:id", authMiddleware, applicationController.deleteApplication);
+router.post("/:id/interview", authMiddleware, applicationController.addInterview);
+
+router.get("/:id/interview", authMiddleware, applicationController.readInterviews);
+
+router.put(
+	"/:id/interview/:interviewId",
+	authMiddleware,
+	applicationController.updateInterview,
+);
 
 export default router;
