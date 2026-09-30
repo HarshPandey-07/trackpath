@@ -15,6 +15,7 @@ export const createApplication = async (req, res, next) => {
 		const data = await applicationService.createApplication(user, body);
 
 		res.status(201).json({
+			success: true,
 			message: "Application created successfully",
 			data,
 		});
@@ -36,10 +37,30 @@ export const readApplications = async (req, res, next) => {
 			await applicationService.findApplications(user, skip, limit);
 
 		res.status(200).json({
+			success: true,
 			data: applications,
 			totalApplications,
 			currentPage: page,
 			totalPages: Math.ceil(totalApplications / limit),
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const readApplicationById = async (req, res, next) => {
+	try {
+		const user = req.user;
+		const applicationId = req.params.id;
+
+		const application = await applicationService.findApplicationById(
+			user,
+			applicationId,
+		);
+
+		res.status(200).json({
+			success: true,
+			data: application,
 		});
 	} catch (error) {
 		next(error);
@@ -66,6 +87,7 @@ export const updateApplication = async (req, res, next) => {
 		);
 
 		res.status(200).json({
+			success: true,
 			message: "Application updated successfully",
 			data,
 		});
@@ -85,6 +107,7 @@ export const deleteApplication = async (req, res, next) => {
 		);
 
 		res.status(200).json({
+			success: true,
 			message: "Application deleted successfully",
 			data,
 		});
@@ -92,6 +115,7 @@ export const deleteApplication = async (req, res, next) => {
 		next(error);
 	}
 };
+<<<<<<< HEAD
 // Add Interview
 export const addInterview = async (req, res, next) => {
 	try {
@@ -114,11 +138,24 @@ export const addInterview = async (req, res, next) => {
 		res.status(201).json({
 			message: "Interview added successfully",
 			data,
+=======
+
+export const applicationStats = async (req, res, next) => {
+	try {
+		const user = req.user;
+
+		const stats = await applicationService.applicationsStats(user);
+
+		res.status(200).json({
+			success: true,
+			stats,
+>>>>>>> main
 		});
 	} catch (error) {
 		next(error);
 	}
 };
+<<<<<<< HEAD
 
 // Get Interviews
 export const readInterviews = async (req, res, next) => {
@@ -168,3 +205,5 @@ export const updateInterview = async (req, res, next) => {
 		next(error);
 	}
 };
+=======
+>>>>>>> main

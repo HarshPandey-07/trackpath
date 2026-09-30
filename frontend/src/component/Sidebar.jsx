@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { logout } from "../service/authService";
 import { ChevronRight } from "lucide-react";
+import toast from "react-hot-toast";
 const Sidebar = () => {
   const { user, setUser, setToken, showSidebar, setShowSidebar } =
     useContext(AuthContext);
@@ -19,6 +20,7 @@ const Sidebar = () => {
       setToken(null);
       setUser(null);
 
+<<<<<<< HEAD
       navigate("/login");
     } catch (error) {
       console.log(`Error while logging out: ${error.message}`);
@@ -91,6 +93,80 @@ const Sidebar = () => {
       )}
     </nav>
   );
+=======
+			toast.success("Logout successful");
+
+			navigate("/login");
+		} catch (error) {
+			toast.error(`Error while logging out: ${error.message}`);
+		}
+	};
+
+	return (
+		<nav
+			className={`fixed flex flex-col left-0 top-0 h-dvh bg-(--sidebar) p-4 transition-all duration-150 ${showSidebar ? "w-64" : "w-16 bg-transparent md:bg-(--sidebar)"}`}
+		>
+			{showSidebar ? (
+				<>
+					<h1
+						className="text-center cursor-pointer"
+						onClick={toggleShowSidebar}
+					>
+						TrackPath
+					</h1>
+					<div className="w-full border-t border-slate-600 my-6"></div>
+					<div className="flex flex-col text-center gap-2">
+						<NavLink
+							to={"/"}
+							className={({ isActive }) =>
+								`${isActive ? "bg-(--accent) text-(--text-primary)" : ""} p-2 w-full rounded hover:bg-(--accent-bg)`
+							}
+						>
+							Dashboard
+						</NavLink>
+						<NavLink
+							to={"/application"}
+							className={({ isActive }) =>
+								`${isActive ? "bg-(--accent) text-(--text-primary)" : ""} p-2 w-full rounded hover:bg-(--accent-bg)`
+							}
+						>
+							Applications
+						</NavLink>
+						<NavLink
+							to={"/login"} // For test purpose later add
+							className={({ isActive }) =>
+								`${isActive ? "bg-(--accent) text-(--text-primary)" : ""} p-2 w-full rounded hover:bg-(--accent-bg)`
+							}
+						>
+							Interviews
+						</NavLink>
+					</div>
+					<div className="mt-auto mb-6 flex flex-col text-center gap-2">
+						<div className="w-full border-t border-slate-600 my-2"></div>
+						<div className="text-(--text-primary) p-2 w-full rounded cursor-pointer hover:bg-(--accent-bg)">
+							{user?.name ? user?.name : "Profile"}
+						</div>
+						<button
+							className="button-red"
+							onClick={(e) => {
+								handleLogout(e);
+							}}
+						>
+							Logout
+						</button>
+					</div>
+				</>
+			) : (
+				<button
+					className="md:bg-transparent! m-0!"
+					onClick={toggleShowSidebar}
+				>
+					<ChevronRight />
+				</button>
+			)}
+		</nav>
+	);
+>>>>>>> main
 };
 
 export default Sidebar;

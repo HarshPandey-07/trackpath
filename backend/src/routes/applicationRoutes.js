@@ -7,6 +7,9 @@ const router = express.Router();
 router.post("/", authMiddleware, applicationController.createApplication);
 router.get("/", authMiddleware, applicationController.readApplications);
 
+router.get("/stats", authMiddleware, applicationController.applicationStats);
+
+router.get("/:id", authMiddleware, applicationController.readApplicationById);
 router.put("/:id", authMiddleware, applicationController.updateApplication);
 router.delete("/:id", authMiddleware, applicationController.deleteApplication);
 router.post("/:id/interview", authMiddleware, applicationController.addInterview);

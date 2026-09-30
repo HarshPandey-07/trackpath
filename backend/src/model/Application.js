@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const applicationSchema = new mongoose.Schema(
 	{
 		userId: {
-			type: String,
+			type: Schema.Types.ObjectId,
 			required: true,
 		},
 		companyName: {
@@ -20,6 +20,11 @@ const applicationSchema = new mongoose.Schema(
 			minLength: 2,
 			maxLength: 100,
 		},
+		type: {
+			type: String,
+			enum: ["Internship", "Placement"],
+			default: "Internship",
+		},
 		status: {
 			type: String,
 			enum: [
@@ -33,8 +38,7 @@ const applicationSchema = new mongoose.Schema(
 		},
 		appliedDate: {
 			type: Date,
-			required: true,
-			default: new Date(),
+			default: Date.now,
 		},
 		applicationLink: {
 			type: String,
@@ -80,6 +84,8 @@ const applicationSchema = new mongoose.Schema(
 	},
 	{ timestamps: true },
 );
+
+applicationSchema.index({ userId: 1, status: 1, createdAt: -1 });
 
 const Application = mongoose.model("Application", applicationSchema);
 
