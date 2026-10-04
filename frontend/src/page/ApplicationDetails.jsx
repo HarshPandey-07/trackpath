@@ -36,11 +36,11 @@ const ApplicationDetails = () => {
 		application: id,
 		round: "",
 		status: "Scheduled",
-		// date: null,
-		// time: "",
+		date: undefined,
 		interviewLink: "",
 		notes: "",
 	});
+	const [time, setTime] = useState(undefined);
 
 	useEffect(() => {
 		// Application
@@ -111,17 +111,29 @@ const ApplicationDetails = () => {
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
+	// Handle changes of the time field while adding interview
+	const handleTimeChangeInterview = async (e) => {
+		setTime(e.target.value);
+	};
+
 	// Handle submit (edit/save) interview
 	const handleSubmitInterview = async (e) => {
 		e.preventDefault();
 
 		try {
+			const payload = {
+				...formData,
+				date:
+					formData.date && time
+						? `${formData.date}T${time}`
+						: undefined,
+			};
 			const response = await submitInterview(
 				token,
 				setToken,
 				selectedInterview?._id,
 				isEditMode,
-				formData,
+				payload,
 			);
 
 			setShowInterviewOptions(false);
@@ -133,8 +145,7 @@ const ApplicationDetails = () => {
 				application: id,
 				round: "",
 				status: "Scheduled",
-				// date: null,
-				// time: "",
+				date: undefined,
 				interviewLink: "",
 				notes: "",
 			});
@@ -304,21 +315,21 @@ const ApplicationDetails = () => {
 
 						<div className="flex flex-col gap-2 mt-4">
 							<div className="space-y-3">
-								{/* <input
+								<input
 									type="date"
 									name="date"
 									value={formData.date}
 									onChange={handleChangeInterviewAdd}
 									className="w-full p-3 rounded-lg border border-(--border)"
-								/> */}
+								/>
 
-								{/* <input
+								<input
 									type="time"
 									name="time"
-									value={formData.time}
-									onChange={handleChangeInterviewAdd}
+									value={time}
+									onChange={handleTimeChangeInterview}
 									className="w-full p-3 rounded-lg border border-(--border)"
-								/> */}
+								/>
 
 								<input
 									type="text"
