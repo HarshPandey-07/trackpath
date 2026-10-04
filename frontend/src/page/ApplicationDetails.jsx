@@ -8,7 +8,11 @@ import { AuthContext } from "../context/AuthContext";
 import { formatDateOnly, formatDateTime } from "../utils/formatter";
 import { ChevronLeftIcon, Pen, Plus, SavePlus, Trash, X } from "lucide-react";
 import toast from "react-hot-toast";
-import { getInterviews, submitInterview } from "../service/interviewService";
+import {
+	getInterviews,
+	removeInterview,
+	submitInterview,
+} from "../service/interviewService";
 
 const ApplicationDetails = () => {
 	const { id } = useParams();
@@ -22,6 +26,7 @@ const ApplicationDetails = () => {
 	const [page, setPage] = useState(1);
 
 	const [interviews, setInterviews] = useState(null);
+	const [interviewVersion, setInterviewVersion] = useState(0);
 
 	const [showInterview, setShowInterview] = useState(false);
 	const [showInterviewOptions, setShowInterviewOptions] = useState(false);
@@ -52,6 +57,10 @@ const ApplicationDetails = () => {
 			}
 		};
 
+		initializeData();
+	}, [token, setToken, id]);
+
+	useEffect(() => {
 		// Application's -> Interviews
 		const initializeInterviews = async () => {
 			try {
@@ -69,9 +78,8 @@ const ApplicationDetails = () => {
 			}
 		};
 
-		initializeData();
 		initializeInterviews();
-	}, [token, setToken, id, page]);
+	}, [token, setToken, id, page, interviewVersion]);
 
 	// Page navigation
 	const pageForward = (e) => {
@@ -131,10 +139,39 @@ const ApplicationDetails = () => {
 				notes: "",
 			});
 
+			setInterviewVersion((prev) => prev + 1);
+
 			toast.success(response.message);
 		} catch (error) {
 			console.error("Failed to save interview:", error);
 			toast.error(`Failed to save interview: ${error}`);
+		}
+	};
+
+	const handleRemoveInterview = async (e) => {
+		e.preventDefault();
+
+		try {
+			const response = await removeInterview(
+				token,
+				setToken,
+				selectedInterview._id,
+			);
+
+			setShowInterview(false);
+			setSelectedInterview(null);
+
+			setInterviewVersion((prev) => prev + 1);
+
+			if (interviews.length === 1 && page > 1) {
+				setPage((prev) => prev - 1);
+			} else {
+				setInterviewVersion((prev) => prev + 1);
+			}
+
+			toast.success(response.message);
+		} catch (error) {
+			toast.error(`Error while deleting interview: ${error}`);
 		}
 	};
 
@@ -407,8 +444,15 @@ const ApplicationDetails = () => {
 							</button>
 
 							<button
-								onClick={() => setShowInterview(false)}
+								onClick={handleRemoveInterview}
 								className="no-design-button p-2! border border-(--border) transition-all duration-200 hover:border-red-600 hover:bg-(--accent-bg)!"
+							>
+								<Trash />
+							</button>
+
+							<button
+								onClick={() => setShowInterview(false)}
+								className="no-design-button p-2! border border-(--border) transition-all duration-200 hover:border-amber-600 hover:bg-(--accent-bg)!"
 							>
 								<X />
 							</button>

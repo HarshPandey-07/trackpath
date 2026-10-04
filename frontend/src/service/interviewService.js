@@ -28,3 +28,16 @@ export const submitInterview = async (
 
 	return response;
 };
+
+export const removeInterview = async (token, setToken, interviewId) => {
+	const response = await apiClient(
+		`/api/interviews/${interviewId}`,
+		token,
+		setToken,
+		{
+			method: "DELETE",
+		},
+	);
+
+	return response;
+};
