@@ -32,7 +32,7 @@ export const createInterview = async (user, interviewData) => {
 			}
 
 			// Updates status only first time
-			if (application.status === "Applied") {
+			if (["Applied", "Scheduled"].includes(application.status)) {
 				application.status = "Interview";
 				await application.save({ session });
 			}

@@ -30,7 +30,10 @@ export const apiClient = async (url, token, setToken, options = {}) => {
 	}
 
 	if (!response.ok) {
-		throw new Error(`API Error: ${response.statusText}`);
+		const errorData = await response.json().catch(() => null);
+		throw new Error(
+			errorData?.message || `API Error: ${response.statusText}`,
+		);
 	}
 
 	return await response.json();

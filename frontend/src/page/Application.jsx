@@ -1,6 +1,6 @@
 import { AuthContext } from "../context/AuthContext";
 import { Plus } from "lucide-react";
-// import { Plus, Search } from "lucide-react"; // Read the comment below in search and filter section of this page below
+// import { Plus, Search } from "lucide-react"; // Read the comment below in search and filter section of this page
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getApplications } from "../service/applicationService";
@@ -180,7 +180,7 @@ const Applications = () => {
 							</button>
 							<button
 								onClick={pageForward}
-								className={`no-design-button text-blue-500! cursor-pointer hover:underline ${pageData?.totalPages === page ? "hidden" : ""}`}
+								className={`no-design-button text-blue-500! cursor-pointer hover:underline ${pageData?.totalPages === page || pageData?.totalPages === 0 ? "hidden" : ""}`}
 							>
 								Next
 							</button>

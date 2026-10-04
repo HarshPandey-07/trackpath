@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
 		};
 
 		initializeAuth();
-	}, []);
+	}, [token]);
 
 	return (
 		<AuthContext.Provider

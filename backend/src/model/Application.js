@@ -55,32 +55,6 @@ const applicationSchema = new mongoose.Schema(
 			type: String,
 			trim: true,
 		},
-		interviews: [
-	{
-		companyName: {
-			type: String,
-			required: true,
-			trim: true,
-		},
-		role: {
-			type: String,
-			required: true,
-			trim: true,
-		},
-		date: {
-			type: Date,
-			required: true,
-		},
-		time: {
-			type: String,
-			required: true,
-		},
-		mode: {
-			type: String,
-			required: true,
-		},
-	},
-],
 	},
 	{ timestamps: true },
 );

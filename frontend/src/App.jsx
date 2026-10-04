@@ -14,6 +14,7 @@ import AuthLayout from "./layout/AuthLayout";
 
 import RequireAuth from "./context/RequireAuth";
 import AuthProvider from "./context/AuthContext";
+
 const router = createBrowserRouter([
 	{
 		element: <AuthLayout />,
