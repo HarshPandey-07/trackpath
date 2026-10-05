@@ -93,7 +93,7 @@ export const updateInterview = async (user, interviewId, updatedData) => {
 		{ _id: interviewId, userId: user.userId },
 		updatedData,
 		{
-			new: true,
+			returnDocument: true,
 			runValidators: true,
 		},
 	);

@@ -106,7 +106,7 @@ const ApplicationDetails = () => {
 	};
 
 	// Handle changes of the field while adding interview
-	const handleChangeInterviewAdd = async (e) => {
+	const handleChangeInterview = async (e) => {
 		const { name, value } = e.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
@@ -137,9 +137,11 @@ const ApplicationDetails = () => {
 			);
 
 			setShowInterviewOptions(false);
-			setIsEditMode(false);
 
-			if (isEditMode) setSelectedInterview(null);
+			if (isEditMode) {
+				setIsEditMode(false);
+				setSelectedInterview(null);
+			}
 
 			setFormData({
 				application: id,
@@ -159,6 +161,7 @@ const ApplicationDetails = () => {
 		}
 	};
 
+	// Remove interview
 	const handleRemoveInterview = async (e) => {
 		e.preventDefault();
 
@@ -271,6 +274,8 @@ const ApplicationDetails = () => {
 						<Plus />
 					</button>
 				</div>
+
+				{/* Interviews */}
 				{interviews?.map((interview) => (
 					<div
 						key={interview._id}
@@ -283,6 +288,7 @@ const ApplicationDetails = () => {
 						<p>Round: {interview.round}</p>
 					</div>
 				))}
+
 				{/* Footer */}
 				<div className="flex justify-between pt-3 px-2">
 					<p className="text-xs">
@@ -306,6 +312,7 @@ const ApplicationDetails = () => {
 				</div>
 			</div>
 
+			{/* Add interview option */}
 			{showInterviewOptions && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
 					<div className="w-full max-w-lg rounded-2xl border border-(--border) bg-(--cards) p-8 shadow-(--shadow) animate-[interviewOpen_0.15s_ease-out]">
@@ -319,7 +326,7 @@ const ApplicationDetails = () => {
 									type="date"
 									name="date"
 									value={formData.date}
-									onChange={handleChangeInterviewAdd}
+									onChange={handleChangeInterview}
 									className="w-full p-3 rounded-lg border border-(--border)"
 								/>
 
@@ -336,7 +343,7 @@ const ApplicationDetails = () => {
 									placeholder="Round"
 									name="round"
 									value={formData.round}
-									onChange={handleChangeInterviewAdd}
+									onChange={handleChangeInterview}
 									className="w-full p-3 rounded-lg border border-(--border)"
 								/>
 
@@ -348,9 +355,10 @@ const ApplicationDetails = () => {
 										{isEditMode ? <Pen /> : <SavePlus />}
 									</button>
 									<button
-										onClick={() =>
-											setShowInterviewOptions(false)
-										}
+										onClick={() => {
+											setShowInterviewOptions(false);
+											setIsEditMode(false);
+										}}
 										className="no-design-button p-2! border border-(--border) transition-all duration-200 hover:border-red-600 hover:bg-(--accent-bg)!"
 									>
 										<X />
@@ -359,45 +367,10 @@ const ApplicationDetails = () => {
 							</div>
 						</div>
 					</div>
-					{/* <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-						<div className="flex gap-3 mt-6">
-							<button
-								// onClick={() => {
-								// 	setCompanyName(
-								// 		selectedInterview.application
-								// 			?.companyName,
-								// 	);
-								// 	setRole(
-								// 		selectedInterview.application?.role,
-								// 	);
-								// 	setDate(
-								// 		selectedInterview.date?.split("T")[0] ||
-								// 			"",
-								// 	);
-								// 	setTime(selectedInterview.time);
-								// 	setRound(selectedInterview.round);
-
-								// 	// setEditingInterview(true);
-
-								// 	setShowInterview(false);
-								// 	setShowInterviewOptions(true);
-								// }}
-								className="no-design-button p-2! border border-(--border) transition-all duration-200 hover:border-purple-600 hover:bg-(--accent-bg)!"
-							>
-								<SavePlus />
-							</button>
-
-							<button
-								onClick={() => setShowInterviewOptions(false)}
-								className="no-design-button p-2! border border-(--border) transition-all duration-200 hover:border-red-600 hover:bg-(--accent-bg)!"
-							>
-								<X />
-							</button>
-						</div>
-					</div> */}
 				</div>
 			)}
 
+			{/* Show interviews */}
 			{showInterview && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
 					<div className="w-full max-w-lg rounded-2xl border border-(--border) bg-(--cards) p-8 shadow-(--shadow) animate-[interviewOpen_0.15s_ease-out]">
@@ -429,26 +402,28 @@ const ApplicationDetails = () => {
 
 						<div className="flex gap-3 mt-6">
 							<button
-								// onClick={() => {
-								// 	setCompanyName(
-								// 		selectedInterview.application
-								// 			?.companyName,
-								// 	);
-								// 	setRole(
-								// 		selectedInterview.application?.role,
-								// 	);
-								// 	setDate(
-								// 		selectedInterview.date?.split("T")[0] ||
-								// 			"",
-								// 	);
-								// 	setTime(selectedInterview.time);
-								// 	setRound(selectedInterview.round);
+								onClick={() => {
+									setIsEditMode(true);
+									setShowInterview(false);
+									setShowInterviewOptions(true);
 
-								// 	// setEditingInterview(true);
-
-								// 	setShowInterview(false);
-								// 	setShowInterviewOptions(true);
-								// }}
+									setFormData({
+										application: id,
+										round: selectedInterview.round,
+										status: selectedInterview.status,
+										date: selectedInterview.date.split(
+											"T",
+										)[0],
+										interviewLink:
+											selectedInterview.interviewLink,
+										notes: selectedInterview.notes,
+									});
+									setTime(
+										selectedInterview.date
+											.split("T")[1]
+											.slice(0, 10),
+									);
+								}}
 								className="no-design-button p-2! border border-(--border) transition-all duration-200 hover:border-purple-600 hover:bg-(--accent-bg)!"
 							>
 								<Pen />
