@@ -32,7 +32,7 @@ export const createInterview = async (user, interviewData) => {
 			}
 
 			// Updates status only first time
-			if (application.status === "Applied") {
+			if (["Applied", "Scheduled"].includes(application.status)) {
 				application.status = "Interview";
 				await application.save({ session });
 			}
@@ -93,7 +93,7 @@ export const updateInterview = async (user, interviewId, updatedData) => {
 		{ _id: interviewId, userId: user.userId },
 		updatedData,
 		{
-			new: true,
+			returnDocument: true,
 			runValidators: true,
 		},
 	);

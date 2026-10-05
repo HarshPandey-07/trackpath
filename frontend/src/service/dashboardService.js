@@ -17,7 +17,7 @@ export const dashboardStats = async (token, setToken) => {
 
 export const dashboardData = async (token, setToken) => {
 	const applicationRes = await apiClient(
-		"/api/applications?page=1&limit=2",
+		"/api/applications?page=1&limit=3",
 		token,
 		setToken,
 	);
