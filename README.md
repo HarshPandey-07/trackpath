@@ -14,16 +14,23 @@ TrackPath is a platform for tracking and managing internship and job application
 
 > 🚧 TrackPath is currently under active development. The project is in its early development stage, and most planned features are not implemented yet.
 
-## 📷 Screenshot
+## 📷 Screenshots
+
+### Dashboard
 
 ![Dashboard_Screenshot](./frontend/public/Dashboard_Screenshot.png)
+
+### Application Page
+
+![Application-Page_Screenshot](./frontend/public/Application-Page_Screenshot.png)
+
+### Interview Detail
+
+![Interview-Page_Screenshot](./frontend/public/Interview-Details_Screenshot.png)
 
 ## ✨ Features
 
 - 📊 Dashboard
-
-## ⏳ Planned Features
-
 - 📝 Dedicated applications page
 - 📋 Manage applications
 - 📅 View upcoming interviews
