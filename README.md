@@ -10,9 +10,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 
-TrackPath is a platform for tracking and managing internship and job applications in one place.
-
-> 🚧 TrackPath is currently under active development. The project is in its early development stage, and most planned features are not implemented yet.
+TrackPath is a platform for managing internship and job applications and their associated interviews in one place.
 
 ## 📷 Screenshots
 
@@ -30,10 +28,10 @@ TrackPath is a platform for tracking and managing internship and job application
 
 ## ✨ Features
 
-- 📊 Dashboard
-- 📝 Dedicated applications page
-- 📋 Manage applications
-- 📅 View upcoming interviews
+- 📊 Dashboard — View application and interview statistics, recent applications and interviews.
+- 📝 Application Management — Create, edit, delete, and track job/internship applications.
+- 🎤 Interview Management — Create, edit, delete, reschedule, and add notes to interviews.
+- 🔗 Application–Interview Linking — View interviews associated with each application.
 
 ## 🛠️ Tech Stack
 
