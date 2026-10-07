@@ -152,6 +152,8 @@ const ApplicationDetails = () => {
 				notes: "",
 			});
 
+			setTime(undefined);
+
 			setInterviewVersion((prev) => prev + 1);
 
 			toast.success(response.message);
