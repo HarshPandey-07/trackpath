@@ -14,6 +14,7 @@ import AuthLayout from "./layout/AuthLayout";
 
 import RequireAuth from "./context/RequireAuth";
 import AuthProvider from "./context/AuthContext";
+import Interview from "./page/Interview";
 
 const router = createBrowserRouter([
 	{
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
 					{
 						path: "/application/edit/:id",
 						element: <ApplicationForm />,
+					},
+					{
+						path: "/interview",
+						element: <Interview />,
 					},
 				],
 			},

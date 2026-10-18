@@ -59,7 +59,7 @@ const Sidebar = () => {
 							Applications
 						</NavLink>
 						<NavLink
-							to={"/login"} // For test purpose later add
+							to={"/interview"}
 							className={({ isActive }) =>
 								`${isActive ? "bg-(--accent) text-(--text-primary)" : ""} p-2 w-full rounded hover:bg-(--accent-bg)`
 							}
