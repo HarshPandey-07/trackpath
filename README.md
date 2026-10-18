@@ -24,7 +24,11 @@ TrackPath is a platform for managing internship and job applications and their a
 
 ### Interview Detail
 
-![Interview-Page_Screenshot](./frontend/public/Interview-Details_Screenshot.png)
+![Interview-Detail_Screenshot](./frontend/public/Interview-Details_Screenshot.png)
+
+### Interview Page
+
+![Interview-Page_Screenshot](./frontend/public/Interview-Page_Screenshot.png)
 
 ## ✨ Features
 
