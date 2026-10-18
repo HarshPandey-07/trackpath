@@ -12,6 +12,18 @@ export const getInterviews = async (page, applicationId, token, setToken) => {
 	return { interviews, pageData };
 };
 
+export const getAllInterviews = async (page, token, setToken) => {
+	const interviewRes = await apiClient(
+		`/api/interviews?page=${page}&limit=7`,
+		token,
+		setToken,
+	);
+
+	const { data: interviews, ...pageData } = interviewRes;
+
+	return { interviews, pageData };
+};
+
 export const submitInterview = async (
 	token,
 	setToken,

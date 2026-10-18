@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import Application from "../model/Application.js";
+import Interview from "../model/Interview.js";
 
 // Create Application
 export const createApplication = async (user, applicationData) => {
@@ -56,18 +58,33 @@ export const updateApplication = async (user, id, updatedData) => {
 
 // Delete application
 export const deleteApplication = async (user, id) => {
-	const application = await Application.findOneAndDelete({
-		_id: id,
-		userId: user.userId,
-	});
+	const session = await mongoose.startSession();
 
-	if (!application) {
-		const error = new Error("Application not found");
-		error.statusCode = 404;
-		throw error;
+	try {
+		let application;
+
+		await session.withTransaction(async () => {
+			application = await Application.findOneAndDelete(
+				{
+					_id: id,
+					userId: user.userId,
+				},
+				{ session },
+			);
+
+			if (!application) {
+				const error = new Error("Application not found");
+				error.statusCode = 404;
+				throw error;
+			}
+
+			await Interview.deleteMany({ application: id }, { session }); // Delete interviews linked with it
+		});
+
+		return application;
+	} finally {
+		await session.endSession();
 	}
-
-	return application;
 };
 
 // Dashboard stats

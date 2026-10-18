@@ -66,7 +66,10 @@ const Dashboard = () => {
 				<div className="bg-(--cards) md:w-96 p-4 space-y-1 rounded-xl border border-(--border) shadow-(--shadow)">
 					<div className="flex justify-between gap-4 md:gap-0">
 						<h2>Upcoming Interviews</h2>
-						<Link className="text-blue-500 hover:underline">
+						<Link
+							to={"/interview"}
+							className="text-blue-500 hover:underline"
+						>
 							View all
 						</Link>
 					</div>

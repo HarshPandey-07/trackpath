@@ -360,6 +360,16 @@ const ApplicationDetails = () => {
 										onClick={() => {
 											setShowInterviewOptions(false);
 											setIsEditMode(false);
+
+											setFormData({
+												round: "",
+												status: "Scheduled",
+												date: undefined,
+												interviewLink: "",
+												notes: "",
+											});
+
+											setTime(undefined);
 										}}
 										className="no-design-button p-2! border border-(--border) transition-all duration-200 hover:border-red-600 hover:bg-(--accent-bg)!"
 									>
