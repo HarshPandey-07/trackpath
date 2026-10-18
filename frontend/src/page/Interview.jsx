@@ -1,5 +1,4 @@
 import { AuthContext } from "../context/AuthContext";
-// import { Plus, Search } from "lucide-react"; // Read the comment below in search and filter section of this page
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllInterviews } from "../service/interviewService.js";
@@ -39,50 +38,6 @@ const Interview = () => {
 
 	return (
 		<div className="space-y-6">
-			{/* PAGE HEADING */}
-
-			{/* In future we can add a feature for adding interview from here, by selecting from existing applications to link them */}
-
-			{/* <div className="flex justify-between items-center">
-				<h2>Interviews</h2>
-
-				<Link
-					to="/interview/add"
-					className="bg-(--accent) flex flex-row text-white px-3 py-2 rounded hover:bg-(--accent-hover)"
-				>
-					<span>
-						<Plus />
-					</span>
-					<span>Add Interview</span>
-				</Link>
-			</div> */}
-
-			{/* SEARCH + FILTER */}
-
-			{/* I'm keeping this code as a comment so that if the backend has these features it could be added easily */}
-
-			{/* <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex flex-row gap-2 w-full md:flex-1 p-2 rounded border border-(--border) bg-(--cards) text-(--text-primary) focus:border-(--accent)">
-                    <span>
-                        <Search />
-                    </span>
-                    <input
-                        type="text"
-                        placeholder="Search interviews..."
-                        className="outline-none w-full"
-                    />
-                </div>
-
-                <select className="w-full md:w-44 p-2 rounded border border-(--border) bg-(--cards) outline-none text-(--text-primary) focus:border-(--accent)">
-                    <option>All Status</option>
-                    <option>Applied</option>
-                    <option>Shortlisted</option>
-                    <option>Interview</option>
-                    <option>Rejected</option>
-                    <option>Selected</option>
-                </select>
-            </div> */}
-
 			{/* INTERVIEW TABLE */}
 
 			<div className="bg-(--cards) w-full p-4 space-y-2 rounded-xl border border-(--border) shadow-(--shadow) overflow-x-auto">
