@@ -1,5 +1,15 @@
 import * as authService from "../service/authService.js";
 
+const isProduction = process.env.NODE_ENV === "production";
+
+const refreshCookieOptions = {
+	httpOnly: true,
+	secure: isProduction,
+	sameSite: isProduction ? "none" : "lax",
+	maxAge: 7 * 24 * 60 * 60 * 1000,
+	path: "/api/auth",
+};
+
 export const register = async (req, res, next) => {
 	try {
 		const body = req.body;
@@ -21,11 +31,7 @@ export const register = async (req, res, next) => {
 		const data = await authService.registerUser(body);
 		const { refreshToken, token, ...user } = data;
 
-		res.cookie("refreshToken", refreshToken, {
-			httpOnly: true,
-			sameSite: "strict",
-			maxAge: 7 * 24 * 60 * 60 * 1000,
-		});
+		res.cookie("refreshToken", refreshToken, refreshCookieOptions);
 
 		res.status(201).json({
 			message: "User registered successfully",
@@ -58,11 +64,7 @@ export const login = async (req, res, next) => {
 		const data = await authService.loginUser(body);
 		const { refreshToken, token, ...user } = data;
 
-		res.cookie("refreshToken", refreshToken, {
-			httpOnly: true,
-			sameSite: "strict",
-			maxAge: 7 * 24 * 60 * 60 * 1000,
-		});
+		res.cookie("refreshToken", refreshToken, refreshCookieOptions);
 
 		res.status(200).json({
 			message: "User logged in successfully",
@@ -106,7 +108,9 @@ export const logout = async (req, res, next) => {
 	try {
 		res.clearCookie("refreshToken", {
 			httpOnly: true,
-			sameSite: "strict",
+			secure: isProduction,
+			sameSite: isProduction ? "none" : "lax",
+			path: "/api/auth",
 		});
 
 		res.status(200).json({ message: "Logged out" });

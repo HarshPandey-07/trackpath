@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
@@ -9,6 +10,13 @@ import interviewRoutes from "./routes/interviewRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
+
+app.use(
+	cors({
+		origin: process.env.FRONTEND_URL,
+		credentials: true,
+	}),
+);
 
 app.use(express.json());
 app.use(cookieParser());
