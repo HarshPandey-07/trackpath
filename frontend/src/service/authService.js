@@ -1,5 +1,7 @@
+import { API_URL } from "./config";
+
 export const register = async (user) => {
-	const res = await fetch("/api/auth/register", {
+	const res = await fetch(`${API_URL}/api/auth/register`, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(user),
@@ -15,7 +17,7 @@ export const register = async (user) => {
 };
 
 export const login = async (user) => {
-	const res = await fetch("/api/auth/login", {
+	const res = await fetch(`${API_URL}/api/auth/login`, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(user),
@@ -31,7 +33,7 @@ export const login = async (user) => {
 };
 
 export const logout = async () => {
-	const res = await fetch("/api/auth/logout", {
+	const res = await fetch(`${API_URL}/api/auth/logout`, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 	});
@@ -46,7 +48,7 @@ export const logout = async () => {
 };
 
 export const refresh = async () => {
-	const res = await fetch("/api/auth/refresh", {
+	const res = await fetch(`${API_URL}/api/auth/refresh`, {
 		method: "POST",
 		credentials: "include",
 	});

@@ -1,8 +1,14 @@
 import { refresh } from "./authService";
+import { API_URL } from "./config";
 
 export const apiClient = async (url, token, setToken, options = {}) => {
+	// Supports both relative API paths and absolute URLs
+	const apiUrl = /^https?:\/\//i.test(url)
+		? url
+		: `${API_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+
 	const makeRequest = async (currentToken) => {
-		return await fetch(url, {
+		return await fetch(apiUrl, {
 			...options,
 			headers: {
 				"Content-Type": "application/json",
